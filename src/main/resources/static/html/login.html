@@ -1,0 +1,19 @@
+<html>
+<body>
+<p>这是一个用户登录页面</p>
+<form name="subForm" method="post" action="/login/judge"> <!-- 采用post方式提交表单填写的内容到controller的/login/judge接口 -->
+    username: <input type="text" name="username"><br><br> <!-- text类型的文本框，用来键入用户名 -->
+
+    password: <input type="password" name="password"><br><br> <!-- password类型的文本框，键入内容会用黑点代替 -->
+
+<!--    <input type="button" name="sub" onclick="subOnClick()" value="登录" >--> <!-- 表单的提交的button类型按钮 -->
+    <input type="submit" name="sub" value="登录" ><!-- 表单的提交的submit类型按钮 -->
+</form>
+<script>
+    function subOnClick(){//若按钮非submit而是button，可在此定义点击按钮事件
+        // subForm.password.value = subForm.password.value + 'secondPassword';//譬如给password加密再传输
+        // subForm.submit();//提交表单到后台
+    }
+</script>
+</body>
+</html>
