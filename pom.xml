@@ -59,6 +59,19 @@
             <version>2.1.6.RELEASE</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.duracloud/common -->
+        <dependency>
+            <groupId>org.duracloud</groupId>
+            <artifactId>common</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.apache.tomcat.embed</groupId>-->
