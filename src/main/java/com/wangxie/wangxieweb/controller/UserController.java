@@ -1,6 +1,7 @@
 package com.wangxie.wangxieweb.controller;
 
 import com.wangxie.wangxieweb.entity.User;
+import com.wangxie.wangxieweb.entity.UserShow;
 import com.wangxie.wangxieweb.service.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +22,9 @@ public class UserController {//这是一个没有对应前端的controller，目
         return userService.findAll();
     }
 
-    @RequestMapping("/getUserList")
-    public List<User> getUserList(){//获取数据库所以用户的用户名和真实姓名
-        return userService.getUserList();
+    @RequestMapping("/getAllUser")
+    public UserShow getAllUser(){//获取数据库所以用户的用户名和真实姓名
+        return userService.getAllUser();
     }
 
 }

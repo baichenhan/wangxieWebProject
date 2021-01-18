@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>网协网站后台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form" lay-filter="demo">
+                  <div class="layui-form-item">
+                      <label for="name" class="layui-form-label">
+                          <span class="x-red">*</span>活动名称
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="name" name="name" required="" autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+                    <div class="layui-form-item">
+                        <label for="department" class="layui-form-label">
+                            <span class="x-red">*</span>负责部门
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="department" name="department" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="create_time" class="layui-form-label">
+                            <span class="x-red">*</span>开始时间
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="create_time" name="create_time" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="end_time" class="layui-form-label">
+                            <span class="x-red">*</span>结束时间
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="end_time" name="end_time" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="content" class="layui-form-label">
+                            <span class="x-red">*</span>内容
+                        </label>
+                        <div class="layui-input-block" id="content"></div>
+                    </div>
+                    <textarea name="content" id="content_text" hidden></textarea>
+                    <div class="layui-form-item">
+                        <label for="create_user" class="layui-form-label">
+                            <span class="x-red">*</span>登记人
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="create_user" name="create_user" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="participant" class="layui-form-label">
+                            <span class="x-red">*</span>参与者
+                        </label>
+                        <div class="layui-input-block" id="participant"></div>
+                    </div>
+                    <div class="layui-form-item">
+                      <label for="department" class="layui-form-label">
+                      </label>
+                      <button  class="layui-btn" lay-filter="add" lay-submit="">
+                          增加
+                      </button>
+                  </div>
+              </form>
+            </div>
+        </div>
+        <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+        <script type="text/javascript">
+            const E = window.wangEditor;
+            const editor = new E('#content');
+            const $text = $('#content_text');
+            editor.config.onchange = function (html) {
+                // 第二步，监控变化，同步更新到 textarea
+                $text.val(html)
+            };
+            editor.create()
+        </script>
+        <script>layui.use(['form', 'layer', 'laydate'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form, layer = layui.layer, laydate = layui.laydate;
+
+                laydate.render({
+                    elem: '#create_time'
+                    ,type: 'datetime'
+                });
+
+                laydate.render({
+                    elem: '#end_time'
+                    ,type: 'datetime'
+                });
+
+                //监听提交
+                form.on('submit(add)',
+                function(data) {
+                    $.post('add.php', data.field, function(result){
+                        console.log(data.field)
+                        if(result.status === 0) {
+                            layer.alert(result.message, {icon: 5});
+                        } else {
+                            layer.alert(result.message, {icon: 6}, function() {
+                                    xadmin.close();
+                                    xadmin.father_reload();
+                                });
+                        }
+                    });
+                    return false;
+                });
+
+                $.get('user.php', function(result){
+                    var str = "<ul>";
+                    for (var k=0;k<result.length;k++){
+                        str+= "<li>";
+                        $.each(result[k].user, function (i, items) {
+                            str+= '<input type="checkbox" name="participant['+ items.user_id +']" title="' + items.user_name + '">';
+                        });
+                        str+= "</li>"
+                    }
+                    str+="</ul>";
+                    $("#participant").html(str);
+                    form.render('checkbox', 'demo');
+                });
+            });</script>
+    </body>
+</html>

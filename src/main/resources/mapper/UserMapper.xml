@@ -8,4 +8,9 @@
     <select id="loginJudge" parameterType="String" resultType="Integer">
         select count(username) from user where  username=#{username} and password=#{password};
     </select> <!-- 此语句对应loginJudge接口，实际是判断user表中用户名为username值和密码password值的记录的条数 -->
+
+    <select id="findRoleById" parameterType="int" resultType="String">
+        select name from role where id=#{0};
+    </select>
+
 </mapper>

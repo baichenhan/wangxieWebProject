@@ -1,5 +1,7 @@
 package com.wangxie.wangxieweb.service.impl;
 
+import com.wangxie.wangxieweb.entity.UserData;
+import com.wangxie.wangxieweb.entity.UserShow;
 import com.wangxie.wangxieweb.service.userService;
 import com.wangxie.wangxieweb.entity.User;
 import com.wangxie.wangxieweb.mapper.UserMapper;
@@ -35,16 +37,43 @@ public class userServiceimpl implements userService {//Service接口的实现层
         return userNameList;//返回前台的是已经不是User类的List了
     }
 
-    public List<User> getUserList() {//获取数据库中所有用户名和真实姓名的接口的另一种写法
+    public UserShow getAllUser() {//获取数据库中所有用户名和真实姓名的接口的另一种写法
         List<User> userList = userMapper.findAll();//图省事继续用了findAll这个mapper，大家不要学我
-        List<User> userList2 = new ArrayList<>();
-        for (User user : userList) {
-            User tmp = new User();
-            tmp.setUsername(user.getUsername());
-            tmp.setName(user.getName());
-            userList2.add(tmp);
+//        List<User> userList2 = new ArrayList<>();
+//        for (User user : userList) {
+//            user.setPassword(null);
+//            System.out.println(user.getMajorId());
+//        }
+        UserShow usershow = new UserShow();
+        usershow.code = 0;
+        usershow.msg = "";
+        usershow.count = userList.size();
+        usershow.data = new ArrayList<>();
+        System.out.println(usershow.count);
+        for(int i=0; i<usershow.count; i++){
+            User UserTmp = userList.get(i);
+            UserData DataTmp = new UserData();
+            DataTmp.id = UserTmp.getId().toString();
+            DataTmp.name = UserTmp.getName();
+            DataTmp.grade = UserTmp.getGrade();
+            DataTmp.username = UserTmp.getUsername();
+            DataTmp.student_id = UserTmp.getStudentId();
+            DataTmp.department = UserTmp.getDepartment();
+            DataTmp.ban_deadline = UserTmp.getBanDeadline().toString();
+            if(UserTmp.isSex())
+                DataTmp.sex = "男";
+            else
+                DataTmp.sex = "女";
+            if(UserTmp.isStatus())
+                DataTmp.status = "正常";
+            else
+                DataTmp.status = "禁用";
+            DataTmp.role = userMapper.findRoleById(UserTmp.getRoleId());
+            usershow.data.add(i,DataTmp);
         }
-        return userList2;//返回前台的仍然是一个User类的List，但除了用户名和真实姓名外均为null
+        System.out.println(usershow.data.size());
+
+        return usershow;//返回前台的是一个UserShow类的对象，内含一个data类的list
     }
 
     public boolean loginJudge(String username, String password) {//判断用户名密码正确性，返回值0表示用户名或密码错误，1表示正确可登录

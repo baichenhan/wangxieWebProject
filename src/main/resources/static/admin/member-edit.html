@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>网协网站后台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form" lay-filter="demo">
+                  <div class="layui-form-item">
+                      <label for="username" class="layui-form-label">
+                          <span class="x-red">*</span>用户名
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="username" name="username" required="" autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+                    <div class="layui-form-item">
+                        <label for="name" class="layui-form-label">
+                            <span class="x-red">*</span>姓名
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="name" name="name" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div><div class="layui-form-item">
+                    <label for="role" class="layui-form-label">
+                        <span class="x-red">*</span>角色
+                    </label>
+                    <div class="layui-input-inline" id="role"></div>
+                </div>
+                    <div class="layui-form-item">
+                        <label for="sex" class="layui-form-label">
+                            <span class="x-red">*</span>性别
+                        </label>
+                        <div class="layui-input-block" id="sex">
+                            <input type="radio" name="sex" value="0" title="女">
+                            <input type="radio" name="sex" value="1" title="男">
+                            <input type="radio" name="sex" value="2" title="MTF">
+                            <input type="radio" name="sex" value="3" title="FTM">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="grade" class="layui-form-label">
+                            <span class="x-red">*</span>年级
+                        </label>
+                        <div class="layui-input-block" id="grade">
+                            <input type="radio" name="grade" value="2018" title="2018">
+                            <input type="radio" name="grade" value="2019" title="2019">
+                            <input type="radio" name="grade" value="2020" title="2020">
+                            <input type="radio" name="grade" value="2021" title="2021">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="college" class="layui-form-label">
+                            <span class="x-red">*</span>学院专业
+                        </label>
+                        <div class="layui-input-inline" id="college"></div>
+                        <div class="layui-input-inline" id="major"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="student_id" class="layui-form-label">
+                            <span class="x-red">*</span>学号
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="student_id" name="student_id" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="department" class="layui-form-label">
+                            <span class="x-red">*</span>部门
+                        </label>
+                        <div class="layui-input-inline" id="department"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="QQ" class="layui-form-label">
+                            <span class="x-red">*</span>QQ
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="QQ" name="QQ" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="status" class="layui-form-label">
+                            <span class="x-red">*</span>状态
+                        </label>
+                        <div class="layui-input-block" id="status">
+                            <input type="radio" name="status" value="1" title="启用">
+                            <input type="radio" name="status" value="0" title="禁用">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                      <label for="department" class="layui-form-label">
+                      </label>
+                      <button  class="layui-btn" lay-filter="edit" lay-submit="">
+                          修改
+                      </button>
+                  </div>
+              </form>
+            </div>
+        </div>
+        <script>layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form, layer = layui.layer, laydate = layui.laydate, id = getQueryVariable('id');
+
+                //监听提交
+                form.on('submit(edit)',
+                function(data) {
+                    $.post('add.php', data.field, function(result){
+                        console.log(data.field)
+                        if(result.status === 0) {
+                            layer.alert(result.message, {icon: 5});
+                        } else {
+                            layer.alert(result.message, {icon: 6}, function() {
+                                    xadmin.close();
+                                    xadmin.father_reload();
+                                });
+                        }
+                    });
+                    return false;
+                });
+
+                $.get('college.php', function(result){
+                    var str = '<select lay-filter="college">';
+                    $.each(result, function (i, items) {
+                        str+= '<option name="college" value="' + items.value + '">' + items.name + '</option>' ;
+                    });
+                    str+='</select>'
+
+                    var str1 = '<select name="major">';
+                    $.each(result[0].major, function (i, items) {
+                        str1+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                    });
+                    str1+='</select>'
+                    $("#college").html(str);
+                    $("#major").html(str1);
+                    form.render('select', 'demo');
+                });
+
+                $.get('department.php', function(result){
+                    var str = '<select name="department">';
+                    $.each(result, function (i, items) {
+                        str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                    });
+                    str+='</select>'
+                    $("#department").html(str);
+                    form.render('select', 'demo');
+                });
+
+                $.get('role.php', function(result){
+                    var str = '<select name="role">';
+                    $.each(result, function (i, items) {
+                        str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                    });
+                    str+='</select>'
+                    $("#role").html(str);
+                    form.render('select', 'demo');
+                });
+
+                form.on('select(college)', function(data){
+                    $.get('college.php', function(result){
+                        var str2 = '<select name="major">';
+                        for (var k=0;k<result.length;k++){
+                            if (data.value === result[k].value){
+                                $.each(result[k].major, function (i, items) {
+                                    str2+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                                });
+                            }
+                        }
+                        str2+='</select>'
+                        $("#major").html(str2);
+                        form.render('select', 'demo');
+                    });
+                });
+
+                $.get('detail.php', {id:id}, function(result){
+                    form.val("demo", {
+                        'username': result.username,
+                        'name': result.name,
+                        'role': result.role.toString(),
+                        'sex': result.sex.toString(),
+                        'grade': result.grade,
+                        'major': result.major.toString(),
+                        'college': result.college.toString(),
+                        'student_id': result.student_id,
+                        'department': result.department.toString(),
+                        'QQ': result.QQ,
+                        'status': result.status.toString(),
+                    });
+                })
+
+                function getQueryVariable(variable)
+                {
+                    var query = window.location.search.substring(1);
+                    var vars = query.split("&");
+                    for (var i=0;i<vars.length;i++) {
+                        var pair = vars[i].split("=");
+                        if(pair[0] == variable){return pair[1];}
+                    }
+                    return(false);
+                }
+            });</script>
+    </body>
+</html>
