@@ -25,4 +25,23 @@
         select * from user where id=#{0};
     </select>
 
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (username,password,role_id,grade,sex,major_id,
+                          student_id,department,name,ban_deadline)
+                          values (#{username},#{password},#{roleId},#{grade},#{sex},#{majorId},
+                          #{studentId},#{department},#{name},#{banDeadline})
+    </insert>
+
+    <select id="findParamIdByName" parameterType="String" resultType="int">
+        select id from #{param} where name=#{name};
+    </select>
+
+    <select id="isStudentIdExist" parameterType="String" resultType="boolean">
+        select count(id) from user where student_id=#{0};
+    </select>
+
+    <select id="isUsernameExist" parameterType="String" resultType="boolean">
+        select count(id) from user where username=#{0};
+    </select>
+
 </mapper>

@@ -11,7 +11,7 @@ public class UserData {
     public String college;
     public String student_id;
     public String department;
-    public String QQ;
+    public String password;
     public String status;
     public String ban_deadline;
 }

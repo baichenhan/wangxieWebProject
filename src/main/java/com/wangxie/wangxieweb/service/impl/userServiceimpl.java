@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.util.DateUtil.now;
+
 @Service("userService")
 public class userServiceimpl implements userService {//Service接口的实现层，主要进行业务逻辑处理
 
@@ -108,4 +110,37 @@ public class userServiceimpl implements userService {//Service接口的实现层
         return DataTmp;
     }
 
+    public Map addUser(UserData userdata) {
+        Map map = new HashMap<>();
+        User user = new User();
+        user.setUsername(userdata.username);
+        user.setName(userdata.name);
+        user.setStudentId(userdata.student_id);
+        user.setPassword(userdata.password);
+        user.setGrade(userdata.grade);
+        user.setDepartment(userdata.department);
+        user.setBanDeadline(now());
+        if(userdata.sex == "男")
+            user.setSex(true);
+        else
+            user.setSex(false);
+        user.setMajorId(userMapper.findParamIdByName("major", "userdata.major"));
+        user.setRoleId(userMapper.findParamIdByName("role", "userdata.role"));
+        if(userMapper.isStudentIdExist(user.getStudentId()))
+        {
+            map.put("status", 0);
+            map.put("message", "学号已存在");
+            return map;
+        }
+        if(userMapper.isUsernameExist(user.getUsername())){
+            map.put("status", 0);
+            map.put("message", "用户名已存在");
+            return map;
+        }
+        int result = userMapper.addUser(user);
+        System.out.println("addUser return number is : " + result);
+        map.put("status", result);
+        map.put("message", "添加成功");
+        return map;
+    }
 }

@@ -14,4 +14,5 @@ public interface userService {//Service层的接口声明，此处无解释。�
     UserShow getAllUser();
     boolean loginJudge(String username, String password);
     UserData findUserById(int id);
+    Map addUser(UserData userdata);
 }

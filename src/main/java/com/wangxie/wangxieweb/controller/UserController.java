@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,23 @@ public class UserController {//这是一个没有对应前端的controller，目
         String id = request.getParameter("id");
 //        System.out.println("this is request id :" + id);
         return userService.findUserById(Integer.parseInt(id));
+    }
+
+    @RequestMapping(value = "/addUser",method = {RequestMethod.POST, RequestMethod.GET})
+    public Map addUser(@NotNull HttpServletRequest request) {
+        UserData userdata = new UserData();
+        userdata.username = request.getParameter("username");
+        userdata.name = request.getParameter("name");
+        userdata.student_id = request.getParameter("student_id");
+        userdata.sex = request.getParameter("sex");
+        userdata.major = request.getParameter("major");
+        userdata.college = request.getParameter("college");
+        userdata.role = request.getParameter("role");
+        userdata.password = request.getParameter("password");
+        userdata.grade = request.getParameter("grade");
+        userdata.department = request.getParameter("department");
+
+        return userService.addUser(userdata);
     }
 
 }
