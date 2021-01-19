@@ -9,32 +9,16 @@
         select count(username) from user where  username=#{username} and password=#{password};
     </select> <!-- 此语句对应loginJudge接口，实际是判断user表中用户名为username值和密码password值的记录的条数 -->
 
-    <select id="findRoleById" parameterType="int" resultType="String">
-        select name from role where id=#{0};
-    </select>
-
-    <select id="findMajorById" parameterType="int" resultType="String">
-        select name from major where id=#{0};
-    </select>
-
-    <select id="findCollegeByMajorId" parameterType="int" resultType="String">
-        select name from major where id=(select pid from major where id=#{0});
-    </select>
-
     <select id="findUserById" resultType="User">
         select * from user where id=#{0};
     </select>
 
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         insert into user (username,password,role_id,grade,sex,major_id,
-                          student_id,department,name,ban_deadline)
+                          student_id,department,status,name,ban_deadline)
                           values (#{username},#{password},#{roleId},#{grade},#{sex},#{majorId},
-                          #{studentId},#{department},#{name},#{banDeadline})
+                          #{studentId},#{department},#{status},#{name},#{banDeadline})
     </insert>
-
-    <select id="findParamIdByName" parameterType="String" resultType="int">
-        select id from #{param} where name=#{name};
-    </select>
 
     <select id="isStudentIdExist" parameterType="String" resultType="boolean">
         select count(id) from user where student_id=#{0};

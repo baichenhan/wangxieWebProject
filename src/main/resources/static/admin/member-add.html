@@ -111,7 +111,7 @@
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
-                    $.post('add.php', data.field, function(result){
+                    $.post('/user/addUser', data.field, function(result){
                         console.log(data.field)
                         if(result.status === 0) {
                             layer.alert(result.message, {icon: 5});
@@ -125,14 +125,14 @@
                     return false;
                 });
 
-                $.get('college.php', function(result){
-                    var str = '<select lay-filter="college">';
+                $.get('/common/getCollegeAndMajorList', function(result){
+                    var str = '<select lay-filter="college" name="college">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
                     });
                     str+='</select>'
 
-                    var str1 = '<select>';
+                    var str1 = '<select name="major">';
                     $.each(result[0].major, function (i, items) {
                         str1+= '<option value="' + items.value + '">' + items.name + '</option>' ;
                     });
@@ -142,8 +142,8 @@
                     form.render('select', 'demo');
                 });
 
-                $.get('department.php', function(result){
-                    var str = '<select>';
+                $.get('/common/getDepartmentList', function(result){
+                    var str = '<select name="department">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
                     });
@@ -152,8 +152,8 @@
                     form.render('select', 'demo');
                 });
 
-                $.get('role.php', function(result){
-                    var str = '<select>';
+                $.get('/common/getRoleList', function(result){
+                    var str = '<select name="role">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
                     });
@@ -163,8 +163,8 @@
                 });
 
                 form.on('select(college)', function(data){
-                    $.get('college.php', function(result){
-                        var str2 = '<select>';
+                    $.get('/common/getCollegeAndMajorList', function(result){
+                        var str2 = '<select name="major">';
                         for (var k=0;k<result.length;k++){
                             if (data.value === result[k].value){
                                 $.each(result[k].major, function (i, items) {

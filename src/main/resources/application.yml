@@ -10,6 +10,9 @@ spring:
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+  resources:
+    chain:
+     cache: true
   #若使用jsp则打开以下配置
 #  mvc:
 #    view:

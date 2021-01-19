@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {//这是一个没有对应前端的controller，目的是在开发过程中调试用，开发完成后将接口移除（否则有暴露数据库风险！）
+public class UserController {
 
     @Autowired
     private userService userService;

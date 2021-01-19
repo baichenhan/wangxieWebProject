@@ -161,7 +161,7 @@
                     form.render('select', 'demo');
                 });
 
-                $.get('role.php', function(result){
+                $.get('/common/getRoleList', function(result){
                     var str = '<select name="role">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;

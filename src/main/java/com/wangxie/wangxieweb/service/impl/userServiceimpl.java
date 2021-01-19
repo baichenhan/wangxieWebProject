@@ -2,6 +2,9 @@ package com.wangxie.wangxieweb.service.impl;
 
 import com.wangxie.wangxieweb.entity.UserData;
 import com.wangxie.wangxieweb.entity.UserShow;
+import com.wangxie.wangxieweb.mapper.DepartmentMapper;
+import com.wangxie.wangxieweb.mapper.MajorMapper;
+import com.wangxie.wangxieweb.mapper.RoleMapper;
 import com.wangxie.wangxieweb.service.userService;
 import com.wangxie.wangxieweb.entity.User;
 import com.wangxie.wangxieweb.mapper.UserMapper;
@@ -20,6 +23,15 @@ public class userServiceimpl implements userService {//Service接口的实现层
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MajorMapper majorMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
+
+    @Autowired
+    private DepartmentMapper departmentMapper;
 
     @Override
     public List<Map<String,String>> findAll() {//万能服务器信息暴露接口
@@ -70,9 +82,9 @@ public class userServiceimpl implements userService {//Service接口的实现层
                 DataTmp.status = "正常";
             else
                 DataTmp.status = "禁用";
-            DataTmp.college = userMapper.findCollegeByMajorId(UserTmp.getMajorId());
-            DataTmp.major = userMapper.findMajorById(UserTmp.getMajorId());
-            DataTmp.role = userMapper.findRoleById(UserTmp.getRoleId());
+            DataTmp.college = majorMapper.findCollegeByMajorId(UserTmp.getMajorId());
+            DataTmp.major = majorMapper.findMajorById(UserTmp.getMajorId());
+            DataTmp.role = roleMapper.findRoleById(UserTmp.getRoleId());
             usershow.data.add(i,DataTmp);
         }
         System.out.println(usershow.data.size());
@@ -104,9 +116,9 @@ public class userServiceimpl implements userService {//Service接口的实现层
             DataTmp.status = "正常";
         else
             DataTmp.status = "禁用";
-        DataTmp.college = userMapper.findCollegeByMajorId(UserTmp.getMajorId());
-        DataTmp.major = userMapper.findMajorById(UserTmp.getMajorId());
-        DataTmp.role = userMapper.findRoleById(UserTmp.getRoleId());
+        DataTmp.college = majorMapper.findCollegeByMajorId(UserTmp.getMajorId());
+        DataTmp.major = majorMapper.findMajorById(UserTmp.getMajorId());
+        DataTmp.role = roleMapper.findRoleById(UserTmp.getRoleId());
         return DataTmp;
     }
 
@@ -118,14 +130,18 @@ public class userServiceimpl implements userService {//Service接口的实现层
         user.setStudentId(userdata.student_id);
         user.setPassword(userdata.password);
         user.setGrade(userdata.grade);
-        user.setDepartment(userdata.department);
         user.setBanDeadline(now());
-        if(userdata.sex == "男")
-            user.setSex(true);
-        else
-            user.setSex(false);
-        user.setMajorId(userMapper.findParamIdByName("major", "userdata.major"));
-        user.setRoleId(userMapper.findParamIdByName("role", "userdata.role"));
+        user.setRoleId(Integer.parseInt(userdata.role));
+        user.setMajorId(Integer.parseInt(userdata.major));
+        user.setSex(Integer.parseInt(userdata.sex) == 1);
+        user.setStatus(true);
+        user.setDepartment(departmentMapper.getDepartmentNameById(Integer.parseInt(userdata.department)));
+//        if(userdata.sex == "男")
+//            user.setSex(true);
+//        else
+//            user.setSex(false);
+//        user.setMajorId(userMapper.findMajorIdByName(userdata.major));
+//        user.setRoleId(userMapper.findRoleIdByName(userdata.role));
         if(userMapper.isStudentIdExist(user.getStudentId()))
         {
             map.put("status", 0);
