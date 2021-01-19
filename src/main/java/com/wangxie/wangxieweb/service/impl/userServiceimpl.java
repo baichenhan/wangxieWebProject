@@ -68,6 +68,8 @@ public class userServiceimpl implements userService {//Service接口的实现层
                 DataTmp.status = "正常";
             else
                 DataTmp.status = "禁用";
+            DataTmp.college = userMapper.findCollegeByMajorId(UserTmp.getMajorId());
+            DataTmp.major = userMapper.findMajorById(UserTmp.getMajorId());
             DataTmp.role = userMapper.findRoleById(UserTmp.getRoleId());
             usershow.data.add(i,DataTmp);
         }
