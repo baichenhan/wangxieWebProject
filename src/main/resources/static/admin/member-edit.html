@@ -187,7 +187,7 @@
                     });
                 });
 
-                $.get('detail.php', {id:id}, function(result){
+                $.get('/user/getUserById', {id:id}, function(result){
                     form.val("demo", {
                         'username': result.username,
                         'name': result.name,

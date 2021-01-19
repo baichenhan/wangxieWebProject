@@ -13,4 +13,5 @@ public interface UserMapper {//mapper层接口，mybitis框架的部分，接口
     String findRoleById(int id);//根据role_id找到对应的角色名
     String findMajorById(int id);
     String findCollegeByMajorId(int id);
+    User findUserById(int id);
 }

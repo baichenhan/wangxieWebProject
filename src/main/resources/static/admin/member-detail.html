@@ -68,8 +68,8 @@
         <script>layui.use('jquery', function() {
             $ = layui.jquery;
             var id = getQueryVariable('id');
-
-            $.get('/user/getAllUser', {id:id}, function(result){
+            // console.log(id);
+            $.get('/user/getUserById', {id:id}, function(result){
                 console.log(result)
                 $("#id").text(result.id);
                 $("#username").text(result.username);

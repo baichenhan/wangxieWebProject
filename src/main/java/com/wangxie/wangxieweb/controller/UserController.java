@@ -1,12 +1,18 @@
 package com.wangxie.wangxieweb.controller;
 
 import com.wangxie.wangxieweb.entity.User;
+import com.wangxie.wangxieweb.entity.UserData;
 import com.wangxie.wangxieweb.entity.UserShow;
+import com.wangxie.wangxieweb.mapper.UserMapper;
 import com.wangxie.wangxieweb.service.userService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +31,14 @@ public class UserController {//这是一个没有对应前端的controller，目
     @RequestMapping("/getAllUser")
     public UserShow getAllUser(){//获取数据库所以用户的用户名和真实姓名
         return userService.getAllUser();
+    }
+
+    @RequestMapping(value = "/getUserById",method = {RequestMethod.POST, RequestMethod.GET})
+    public UserData getUserById(@NotNull HttpServletRequest request) {
+//        System.out.println("get the interface!");
+        String id = request.getParameter("id");
+//        System.out.println("this is request id :" + id);
+        return userService.findUserById(Integer.parseInt(id));
     }
 
 }

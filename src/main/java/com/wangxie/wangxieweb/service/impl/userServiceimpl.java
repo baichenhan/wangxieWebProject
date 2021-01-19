@@ -49,7 +49,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
         usershow.msg = "";
         usershow.count = userList.size();
         usershow.data = new ArrayList<>();
-        System.out.println(usershow.count);
+//        System.out.println(usershow.count);
         for(int i=0; i<usershow.count; i++){
             User UserTmp = userList.get(i);
             UserData DataTmp = new UserData();
@@ -81,6 +81,31 @@ public class userServiceimpl implements userService {//Service接口的实现层
     public boolean loginJudge(String username, String password) {//判断用户名密码正确性，返回值0表示用户名或密码错误，1表示正确可登录
         Integer numberOfThisUser = userMapper.loginJudge(username, password);//调用mapper层接口，实际是判断用户名为username值且密码为password值的记录条数
         return numberOfThisUser > 0;
+    }
+
+    public UserData findUserById(int id){
+        User UserTmp = new User();
+        UserTmp = userMapper.findUserById(id);
+        UserData DataTmp = new UserData();
+        DataTmp.id = UserTmp.getId().toString();
+        DataTmp.name = UserTmp.getName();
+        DataTmp.grade = UserTmp.getGrade();
+        DataTmp.username = UserTmp.getUsername();
+        DataTmp.student_id = UserTmp.getStudentId();
+        DataTmp.department = UserTmp.getDepartment();
+        DataTmp.ban_deadline = UserTmp.getBanDeadline().toString();
+        if(UserTmp.isSex())
+            DataTmp.sex = "男";
+        else
+            DataTmp.sex = "女";
+        if(UserTmp.isStatus())
+            DataTmp.status = "正常";
+        else
+            DataTmp.status = "禁用";
+        DataTmp.college = userMapper.findCollegeByMajorId(UserTmp.getMajorId());
+        DataTmp.major = userMapper.findMajorById(UserTmp.getMajorId());
+        DataTmp.role = userMapper.findRoleById(UserTmp.getRoleId());
+        return DataTmp;
     }
 
 }

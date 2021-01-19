@@ -150,6 +150,7 @@
 
                 if(layEvent === 'detail'){ //查看
                     xadmin.open('查看','member-detail.html?id=' + obj.data.id,800,600);
+                    // console.log("this is the request id :" + obj.data.id);
                 } else if(layEvent === 'del'){ //删除
                     layer.confirm('真的删除该行么', function(index){
                         //向服务端发送删除指令

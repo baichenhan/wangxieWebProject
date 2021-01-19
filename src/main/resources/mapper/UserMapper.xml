@@ -21,4 +21,8 @@
         select name from major where id=(select pid from major where id=#{0});
     </select>
 
+    <select id="findUserById" resultType="User">
+        select * from user where id=#{0};
+    </select>
+
 </mapper>
