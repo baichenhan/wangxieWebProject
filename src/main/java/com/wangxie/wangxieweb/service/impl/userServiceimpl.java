@@ -66,26 +66,28 @@ public class userServiceimpl implements userService {//Service接口的实现层
 //        System.out.println(usershow.count);
         for(int i=0; i<usershow.count; i++){
             User UserTmp = userList.get(i);
-            UserData DataTmp = new UserData();
-            DataTmp.id = UserTmp.getId().toString();
-            DataTmp.name = UserTmp.getName();
-            DataTmp.grade = UserTmp.getGrade();
-            DataTmp.username = UserTmp.getUsername();
-            DataTmp.student_id = UserTmp.getStudentId();
-            DataTmp.department = UserTmp.getDepartment();
-            DataTmp.ban_deadline = UserTmp.getBanDeadline().toString();
-            if(UserTmp.isSex())
-                DataTmp.sex = "男";
-            else
-                DataTmp.sex = "女";
-            if(UserTmp.isStatus())
-                DataTmp.status = "正常";
-            else
-                DataTmp.status = "禁用";
-            DataTmp.college = majorMapper.findCollegeByMajorId(UserTmp.getMajorId());
-            DataTmp.major = majorMapper.findMajorById(UserTmp.getMajorId());
-            DataTmp.role = roleMapper.findRoleById(UserTmp.getRoleId());
-            usershow.data.add(i,DataTmp);
+            if(UserTmp.getDeleteTime() == null || (UserTmp.getDeleteTime() != null&&UserTmp.getDeleteTime().after(now()))){
+                UserData DataTmp = new UserData();
+                DataTmp.id = UserTmp.getId().toString();
+                DataTmp.name = UserTmp.getName();
+                DataTmp.grade = UserTmp.getGrade();
+                DataTmp.username = UserTmp.getUsername();
+                DataTmp.student_id = UserTmp.getStudentId();
+                DataTmp.department = UserTmp.getDepartment();
+                DataTmp.ban_deadline = UserTmp.getBanDeadline().toString();
+                if(UserTmp.isSex())
+                    DataTmp.sex = "男";
+                else
+                    DataTmp.sex = "女";
+                if(UserTmp.isStatus())
+                    DataTmp.status = "正常";
+                else
+                    DataTmp.status = "禁用";
+                DataTmp.college = majorMapper.findCollegeByMajorId(UserTmp.getMajorId());
+                DataTmp.major = majorMapper.findMajorById(UserTmp.getMajorId());
+                DataTmp.role = roleMapper.findRoleById(UserTmp.getRoleId());
+                usershow.data.add(i,DataTmp);
+            }
         }
         System.out.println(usershow.data.size());
 
