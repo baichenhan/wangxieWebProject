@@ -21,14 +21,22 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form" lay-filter="demo">
-                  <div class="layui-form-item">
-                      <label for="username" class="layui-form-label">
-                          <span class="x-red">*</span>用户名
-                      </label>
-                      <div class="layui-input-inline">
-                          <input type="text" id="username" name="username" required="" autocomplete="off" class="layui-input">
-                      </div>
-                  </div>
+                    <div class="layui-form-item" style="visibility: hidden">
+                        <label for="id" class="layui-form-label">
+                            <span class="x-red">*</span>id
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="id" name="id" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="username" class="layui-form-label">
+                           <span class="x-red">*</span>用户名
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="username" name="username" required="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label for="name" class="layui-form-label">
                             <span class="x-red">*</span>姓名
@@ -49,8 +57,8 @@
                         <div class="layui-input-block" id="sex">
                             <input type="radio" name="sex" value="0" title="女">
                             <input type="radio" name="sex" value="1" title="男">
-                            <input type="radio" name="sex" value="2" title="MTF">
-                            <input type="radio" name="sex" value="3" title="FTM">
+<!--                            <input type="radio" name="sex" value="2" title="MTF">-->
+<!--                            <input type="radio" name="sex" value="3" title="FTM">-->
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -86,11 +94,11 @@
                         <div class="layui-input-inline" id="department"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="QQ" class="layui-form-label">
-                            <span class="x-red">*</span>QQ
+                        <label for="password" class="layui-form-label">
+                            <span class="x-red">*</span>密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="QQ" name="QQ" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="password" name="password" required="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -120,7 +128,7 @@
                 //监听提交
                 form.on('submit(edit)',
                 function(data) {
-                    $.post('add.php', data.field, function(result){
+                    $.post('/user/editUserByUser', data.field, function(result){
                         console.log(data.field)
                         if(result.status === 0) {
                             layer.alert(result.message, {icon: 5});
@@ -134,7 +142,7 @@
                     return false;
                 });
 
-                $.get('college.php', function(result){
+                $.get('/common/getCollegeAndMajorList', function(result){
                     var str = '<select lay-filter="college">';
                     $.each(result, function (i, items) {
                         str+= '<option name="college" value="' + items.value + '">' + items.name + '</option>' ;
@@ -151,7 +159,7 @@
                     form.render('select', 'demo');
                 });
 
-                $.get('department.php', function(result){
+                $.get('/common/getDepartmentList', function(result){
                     var str = '<select name="department">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
@@ -172,7 +180,7 @@
                 });
 
                 form.on('select(college)', function(data){
-                    $.get('college.php', function(result){
+                    $.get('/common/getCollegeAndMajorList', function(result){
                         var str2 = '<select name="major">';
                         for (var k=0;k<result.length;k++){
                             if (data.value === result[k].value){
@@ -189,6 +197,7 @@
 
                 $.get('/user/getUserById', {id:id}, function(result){
                     form.val("demo", {
+                        'id': result.id,
                         'username': result.username,
                         'name': result.name,
                         'role': result.role.toString(),

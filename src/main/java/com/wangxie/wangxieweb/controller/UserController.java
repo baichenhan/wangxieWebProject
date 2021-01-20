@@ -77,4 +77,23 @@ public class UserController {
 //        System.out.println("recover id is : " + id);
         return userService.recoverDeleteUserById(id);
     }
+
+    @RequestMapping(value = "/editUserByUser",method = {RequestMethod.POST, RequestMethod.GET})
+    public Map editUserByUser(@NotNull HttpServletRequest request) {
+        UserData userdata = new UserData();
+        userdata.username = request.getParameter("username");
+        userdata.name = request.getParameter("name");
+        userdata.student_id = request.getParameter("student_id");
+        userdata.sex = request.getParameter("sex");
+        userdata.major = request.getParameter("major");
+        userdata.college = request.getParameter("college");
+        userdata.role = request.getParameter("role");
+        userdata.password = request.getParameter("password");
+        userdata.grade = request.getParameter("grade");
+        userdata.department = request.getParameter("department");
+        userdata.status = request.getParameter("status");
+        userdata.id = request.getParameter("id");
+
+        return userService.editUserById(userdata);
+    }
 }

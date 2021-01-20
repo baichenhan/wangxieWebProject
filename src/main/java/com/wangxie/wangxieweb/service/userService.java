@@ -18,5 +18,5 @@ public interface userService {//Service层的接口声明，此处无解释。�
     Map deleteUserById(int id);
     UserShow getDeleteUser();
     Map recoverDeleteUserById(int id);
-
+    Map editUserById(UserData userdata);
 }

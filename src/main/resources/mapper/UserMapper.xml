@@ -36,4 +36,11 @@
         update user set delete_time=null where id=#{0};
     </update>
 
+    <update id="editUserByUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        update user set username=#{username},password=#{password},role_id=#{roleId},grade=#{grade},
+                        sex=#{sex},major_id=#{majorId},student_id=#{studentId},department=#{department},
+                        status=#{status},name=#{name},ban_deadline=#{banDeadline}
+            where id=#{id}
+    </update>
+
 </mapper>
