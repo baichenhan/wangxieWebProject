@@ -59,4 +59,22 @@ public class UserController {
         return userService.addUser(userdata);
     }
 
+    @RequestMapping(value = "/deleteUserById",method = {RequestMethod.POST, RequestMethod.GET})
+    public Map deleteUserById(@NotNull HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+//        System.out.println("delete id is : " + id);
+        return userService.deleteUserById(id);
+    }
+
+    @RequestMapping("/getDeleteUser")
+    public UserShow getDeleteUser() {
+        return userService.getDeleteUser();
+    }
+
+    @RequestMapping(value = "/recoverDeleteUser",method = {RequestMethod.POST, RequestMethod.GET})
+    public Map recoverDeleteUser(@NotNull HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+//        System.out.println("recover id is : " + id);
+        return userService.recoverDeleteUserById(id);
+    }
 }

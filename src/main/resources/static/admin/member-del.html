@@ -84,7 +84,7 @@
             table.render({
                 elem: '#demo'
                 ,toolbar: '#toolbarDemo'
-                ,url:'member.php'
+                ,url:'/user/getDeleteUser'
                 ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增\
                 ,page: true
                 ,cols: [[
@@ -120,7 +120,7 @@
                         }
                         ids = ids.substr(0, ids.length-1);
                         layer.confirm('确认要恢复这些数据吗？',function(index){
-                            $.post("delete.php", {id:ids}, function(result){
+                            $.post("/user/recoverDeleteUser", {id:ids}, function(result){
                                 if(result.status === 1){
                                     layer.msg(result.message,{icon:1,time:1000},function() {location.reload();});
                                 } else {

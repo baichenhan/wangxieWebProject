@@ -14,4 +14,6 @@ public interface UserMapper {//mapper层接口，mybitis框架的部分，接口
     boolean isStudentIdExist(String studentId);
     boolean isUsernameExist(String username);
     int addUser(User user);
+    int deleteUserById(int id);
+    int recoverDeleteUserById(int id);
 }

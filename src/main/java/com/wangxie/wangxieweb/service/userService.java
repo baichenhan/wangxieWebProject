@@ -15,4 +15,8 @@ public interface userService {//Service层的接口声明，此处无解释。�
     boolean loginJudge(String username, String password);
     UserData findUserById(int id);
     Map addUser(UserData userdata);
+    Map deleteUserById(int id);
+    UserShow getDeleteUser();
+    Map recoverDeleteUserById(int id);
+
 }

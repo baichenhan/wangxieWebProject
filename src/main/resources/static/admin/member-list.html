@@ -131,7 +131,7 @@
                         }
                         ids = ids.substr(0, ids.length-1);
                         layer.confirm('确认要删除这些数据吗？',function(index){
-                            $.post("delete.php", {id:ids}, function(result){
+                            $.post("/user/deleteUserById", {id:ids}, function(result){
                                 if(result.status === 1){
                                     layer.msg(result.message,{icon:1,time:1000},function() {location.reload();});
                                 } else {
@@ -155,7 +155,7 @@
                     layer.confirm('真的删除该行么', function(index){
                         //向服务端发送删除指令
                         var id = data.id;
-                        $.post('delete.php', {id:id}, function(result){
+                        $.post('/user/deleteUserById', {id:id}, function(result){
                             if(result.status === 1){
                                 layer.msg(result.message,{icon:1,time:1000}, function(){
                                     obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
