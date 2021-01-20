@@ -21,7 +21,7 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form" lay-filter="demo">
-                    <div class="layui-form-item" style="visibility: hidden">
+                    <div class="layui-form-item" style="display: none">
                         <label for="id" class="layui-form-label">
                             <span class="x-red">*</span>id
                         </label>
@@ -125,6 +125,31 @@
                 $ = layui.jquery;
                 var form = layui.form, layer = layui.layer, laydate = layui.laydate, id = getQueryVariable('id');
 
+                $.get('/user/getUserById', {id:id}, function(result){
+                    {if(result.sex === "男")
+                        result.sex = "1";
+                    else
+                        result.sex = "0";
+                    if(result.status === "启用")
+                        result.status = "1";
+                    else
+                        result.status = "0";}
+                    form.val("demo", {
+                        'id': result.id,
+                        'username': result.username,
+                        'name': result.name,
+                        'role': result.role,
+                        'sex': result.sex,
+                        'grade': result.grade,
+                        'major': result.major,
+                        'college': result.college,
+                        'student_id': result.student_id,
+                        'department': result.department,
+                        'QQ': result.password,
+                        'status': result.status,
+                    });
+                })
+
                 //监听提交
                 form.on('submit(edit)',
                 function(data) {
@@ -143,7 +168,7 @@
                 });
 
                 $.get('/common/getCollegeAndMajorList', function(result){
-                    var str = '<select lay-filter="college">';
+                    var str = '<select lay-filter="college" name="college">';
                     $.each(result, function (i, items) {
                         str+= '<option name="college" value="' + items.value + '">' + items.name + '</option>' ;
                     });
@@ -194,23 +219,6 @@
                         form.render('select', 'demo');
                     });
                 });
-
-                $.get('/user/getUserById', {id:id}, function(result){
-                    form.val("demo", {
-                        'id': result.id,
-                        'username': result.username,
-                        'name': result.name,
-                        'role': result.role.toString(),
-                        'sex': result.sex.toString(),
-                        'grade': result.grade,
-                        'major': result.major.toString(),
-                        'college': result.college.toString(),
-                        'student_id': result.student_id,
-                        'department': result.department.toString(),
-                        'QQ': result.QQ,
-                        'status': result.status.toString(),
-                    });
-                })
 
                 function getQueryVariable(variable)
                 {

@@ -118,7 +118,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
         else
             DataTmp.sex = "女";
         if(UserTmp.isStatus())
-            DataTmp.status = "正常";
+            DataTmp.status = "启用";
         else
             DataTmp.status = "禁用";
         DataTmp.college = majorMapper.findCollegeByMajorId(UserTmp.getMajorId());
