@@ -123,17 +123,22 @@
         <script>layui.use(['form', 'layer'],
             function() {
                 $ = layui.jquery;
+                $.ajaxSettings.async = false;
                 var form = layui.form, layer = layui.layer, laydate = layui.laydate, id = getQueryVariable('id');
+                var myCollegeId = 0;
+                var myMajorId = 0;
 
                 $.get('/user/getUserById', {id:id}, function(result){
+                    // console.log("abc  " + userdate);
+                    console.log("1");
                     {if(result.sex === "男")
                         result.sex = "1";
                     else
                         result.sex = "0";
-                    if(result.status === "启用")
-                        result.status = "1";
-                    else
-                        result.status = "0";}
+                        if(result.status === "启用")
+                            result.status = "1";
+                        else
+                            result.status = "0";}
                     form.val("demo", {
                         'id': result.id,
                         'username': result.username,
@@ -141,13 +146,16 @@
                         'role': result.role,
                         'sex': result.sex,
                         'grade': result.grade,
-                        'major': result.major,
-                        'college': result.college,
+                        // 'major': result.majorId.toString(),
+                        // 'college': result.collegeId.toString(),
                         'student_id': result.student_id,
                         'department': result.department,
                         'QQ': result.password,
                         'status': result.status,
                     });
+                    myCollegeId = result.collegeId.toString();
+                    myMajorId = result.majorId.toString();
+                    form.render();
                 })
 
                 //监听提交
@@ -168,20 +176,40 @@
                 });
 
                 $.get('/common/getCollegeAndMajorList', function(result){
-                    var str = '<select lay-filter="college" name="college">';
+                    var str = '<select lay-filter="college" id="college1" name="college" autocomplete="off">';
                     $.each(result, function (i, items) {
-                        str+= '<option name="college" value="' + items.value + '">' + items.name + '</option>' ;
+                        str += '<option value="' + items.value;
+                        str += '">' + items.name + '</option>' ;
+                        console.log("str11111" +"   "+ items.value)
                     });
                     str+='</select>'
-
-                    var str1 = '<select name="major">';
-                    $.each(result[0].major, function (i, items) {
-                        str1+= '<option value="' + items.value + '">' + items.name + '</option>' ;
-                    });
-                    str1+='</select>'
                     $("#college").html(str);
+                    // console.log($("#college1").val());
+                    $("#college1").val(myCollegeId);
+                    // console.log("after set val " + $("#college1").val());
+                    form.render();
+                });
+
+                $.get('/common/getCollegeAndMajorList', function(result){
+                    var str1 = '<select id="major1" name="major">';
+                    console.log("myCollegeId is : " + myCollegeId);
+                    console.log("college1.val() is : " + $('#college1').val());
+                    for (var k=0;k<result.length;k++){
+                        if (myCollegeId === result[k].value){
+                            $.each(result[k].major, function (i, items) {
+                                str1+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                            });
+                        }
+                    }
+                    // $.each(result[0].major, function (i, items) {
+                    //     str1 += '<option  value="' + items.value;
+                    //     str1 += '">' + items.name + '</option>' ;
+                    // });
+                    str1+='</select>'
                     $("#major").html(str1);
-                    form.render('select', 'demo');
+                    $("#major1").val(myMajorId);
+                    console.log("major1 after set val " + $("#major1").val());
+                    form.render();
                 });
 
                 $.get('/common/getDepartmentList', function(result){
@@ -206,7 +234,8 @@
 
                 form.on('select(college)', function(data){
                     $.get('/common/getCollegeAndMajorList', function(result){
-                        var str2 = '<select name="major">';
+                        console.log("select(college) is : " + data.value);
+                        var str2 = '<select id="major" name="major">';
                         for (var k=0;k<result.length;k++){
                             if (data.value === result[k].value){
                                 $.each(result[k].major, function (i, items) {

@@ -12,4 +12,5 @@ public interface MajorMapper {
     int findMajorIdByName(String name);
     String findCollegeByMajorId(int id);
     String findMajorById(int id);
+    int findCollegeIdByMajorId(int id);
 }

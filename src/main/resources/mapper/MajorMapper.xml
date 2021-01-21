@@ -21,4 +21,8 @@
     <select id="findCollegeByMajorId" parameterType="int" resultType="String">
         select name from major where id=(select pid from major where id=#{0});
     </select>
+
+    <select id="findCollegeIdByMajorId" parameterType="int" resultType="int">
+        select pid from major where id=#{0};
+    </select>
 </mapper>

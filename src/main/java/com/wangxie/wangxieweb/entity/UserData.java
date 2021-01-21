@@ -8,7 +8,9 @@ public class UserData {
     public String sex;
     public String grade;
     public String major;
+    public Integer majorId;
     public String college;
+    public Integer collegeId;
     public String student_id;
     public String department;
     public String password;

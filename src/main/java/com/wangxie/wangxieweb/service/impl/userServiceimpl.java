@@ -76,6 +76,8 @@ public class userServiceimpl implements userService {//Service接口的实现层
                 DataTmp.student_id = UserTmp.getStudentId();
                 DataTmp.department = UserTmp.getDepartment();
                 DataTmp.ban_deadline = UserTmp.getBanDeadline().toString();
+                DataTmp.majorId = UserTmp.getMajorId();
+                DataTmp.collegeId = majorMapper.findCollegeIdByMajorId(DataTmp.majorId);
                 if(UserTmp.isSex())
                     DataTmp.sex = "男";
                 else
@@ -113,6 +115,8 @@ public class userServiceimpl implements userService {//Service接口的实现层
         DataTmp.student_id = UserTmp.getStudentId();
         DataTmp.department = UserTmp.getDepartment();
         DataTmp.ban_deadline = UserTmp.getBanDeadline().toString();
+        DataTmp.majorId = UserTmp.getMajorId();
+        DataTmp.collegeId = majorMapper.findCollegeIdByMajorId(DataTmp.majorId);
         if(UserTmp.isSex())
             DataTmp.sex = "男";
         else

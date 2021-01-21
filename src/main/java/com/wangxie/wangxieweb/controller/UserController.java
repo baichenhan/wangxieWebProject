@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getUserById",method = {RequestMethod.POST, RequestMethod.GET})
-    public UserData getUserById(@NotNull HttpServletRequest request) {
+    public UserData getUserById(@NotNull HttpServletRequest request) throws InterruptedException {
 //        System.out.println("get the interface!");
         String id = request.getParameter("id");
 //        System.out.println("this is request id :" + id);
