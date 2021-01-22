@@ -93,7 +93,7 @@
                         </label>
                         <div class="layui-input-inline" id="department"></div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" style="display: none">
                         <label for="password" class="layui-form-label">
                             <span class="x-red">*</span>密码
                         </label>
@@ -108,6 +108,14 @@
                         <div class="layui-input-block" id="status">
                             <input type="radio" name="status" value="1" title="启用">
                             <input type="radio" name="status" value="0" title="禁用">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="display: none">
+                        <label for="ban_deadline" class="layui-form-label">
+                            <span class="x-red">*</span>ban_deadline
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="ban_deadline" name="ban_deadline" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -125,8 +133,10 @@
                 $ = layui.jquery;
                 $.ajaxSettings.async = false;
                 var form = layui.form, layer = layui.layer, laydate = layui.laydate, id = getQueryVariable('id');
-                var myCollegeId = 0;
-                var myMajorId = 0;
+                var myCollegeId = "0";
+                var myMajorId = "0";
+                var myRoleId = "0";
+                var myDepartmentId = "0";
 
                 $.get('/user/getUserById', {id:id}, function(result){
                     // console.log("abc  " + userdate);
@@ -143,18 +153,17 @@
                         'id': result.id,
                         'username': result.username,
                         'name': result.name,
-                        'role': result.role,
                         'sex': result.sex,
                         'grade': result.grade,
-                        // 'major': result.majorId.toString(),
-                        // 'college': result.collegeId.toString(),
                         'student_id': result.student_id,
-                        'department': result.department,
-                        'QQ': result.password,
+                        'password': result.password,
+                        'ban_deadline': result.ban_deadline,
                         'status': result.status,
                     });
                     myCollegeId = result.collegeId.toString();
                     myMajorId = result.majorId.toString();
+                    myRoleId = result.roleId.toString();
+                    myDepartmentId = result.departmentId.toString();
                     form.render();
                 })
 
@@ -187,10 +196,8 @@
                     // console.log($("#college1").val());
                     $("#college1").val(myCollegeId);
                     // console.log("after set val " + $("#college1").val());
-                    form.render();
-                });
+                    form.render('select', 'demo');
 
-                $.get('/common/getCollegeAndMajorList', function(result){
                     var str1 = '<select id="major1" name="major">';
                     console.log("myCollegeId is : " + myCollegeId);
                     console.log("college1.val() is : " + $('#college1').val());
@@ -201,41 +208,57 @@
                             });
                         }
                     }
-                    // $.each(result[0].major, function (i, items) {
-                    //     str1 += '<option  value="' + items.value;
-                    //     str1 += '">' + items.name + '</option>' ;
-                    // });
                     str1+='</select>'
                     $("#major").html(str1);
                     $("#major1").val(myMajorId);
                     console.log("major1 after set val " + $("#major1").val());
-                    form.render();
+                    form.render('select', 'demo');
                 });
 
+                // $.get('/common/getCollegeAndMajorList', function(result){
+                //     var str1 = '<select id="major1" name="major">';
+                //     console.log("myCollegeId is : " + myCollegeId);
+                //     console.log("college1.val() is : " + $('#college1').val());
+                //     for (var k=0;k<result.length;k++){
+                //         if (myCollegeId === result[k].value){
+                //             $.each(result[k].major, function (i, items) {
+                //                 str1+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                //             });
+                //         }
+                //     }
+                //     str1+='</select>'
+                //     $("#major").html(str1);
+                //     $("#major1").val(myMajorId);
+                //     console.log("major1 after set val " + $("#major1").val());
+                //     form.render('select', 'demo');
+                // });
+
                 $.get('/common/getDepartmentList', function(result){
-                    var str = '<select name="department">';
+                    var str = '<select name="department" id="department1">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
                     });
                     str+='</select>'
                     $("#department").html(str);
+                    $('#department1').val(myDepartmentId);
                     form.render('select', 'demo');
                 });
 
                 $.get('/common/getRoleList', function(result){
-                    var str = '<select name="role">';
+                    var str = '<select name="role" id="role1">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
                     });
                     str+='</select>'
                     $("#role").html(str);
+                    $('#role1').val(myRoleId);
                     form.render('select', 'demo');
                 });
 
                 form.on('select(college)', function(data){
                     $.get('/common/getCollegeAndMajorList', function(result){
                         console.log("select(college) is : " + data.value);
-                        var str2 = '<select id="major" name="major">';
+                        var str2 = '<select id="major2" name="major">';
                         for (var k=0;k<result.length;k++){
                             if (data.value === result[k].value){
                                 $.each(result[k].major, function (i, items) {

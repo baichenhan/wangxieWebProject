@@ -5,6 +5,7 @@ public class UserData {
     public String username;
     public String name;
     public String role;
+    public Integer roleId;
     public String sex;
     public String grade;
     public String major;
@@ -13,6 +14,7 @@ public class UserData {
     public Integer collegeId;
     public String student_id;
     public String department;
+    public Integer departmentId;
     public String password;
     public String status;
     public String ban_deadline;

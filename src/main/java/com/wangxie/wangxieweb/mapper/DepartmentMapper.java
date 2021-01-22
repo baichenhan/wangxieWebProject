@@ -10,4 +10,5 @@ import java.util.List;
 public interface DepartmentMapper {
     List<Department> getAllDepartment();
     String getDepartmentNameById(int id);
+    int getDepartmentIdByName(String name);
 }

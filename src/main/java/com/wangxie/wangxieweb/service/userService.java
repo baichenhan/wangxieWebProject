@@ -5,6 +5,7 @@ import com.wangxie.wangxieweb.entity.UserData;
 import com.wangxie.wangxieweb.entity.UserShow;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,5 +19,5 @@ public interface userService {//Service层的接口声明，此处无解释。�
     Map deleteUserById(int id);
     UserShow getDeleteUser();
     Map recoverDeleteUserById(int id);
-    Map editUserById(UserData userdata);
+    Map editUserById(UserData userdata) throws ParseException;
 }

@@ -1,7 +1,7 @@
 package com.wangxie.wangxieweb.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class User  implements Serializable {//对应用户user的实体类
     private String username;//用户名
@@ -15,8 +15,8 @@ public class User  implements Serializable {//对应用户user的实体类
     private String studentId;
     private String department;
     private boolean status;
-    private Date banDeadline;
-    private Date deleteTime;
+    private Timestamp banDeadline;
+    private Timestamp deleteTime;
 
 
     public String getUsername() {
@@ -107,19 +107,19 @@ public class User  implements Serializable {//对应用户user的实体类
         this.status = status;
     }
 
-    public Date getBanDeadline() {
+    public Timestamp getBanDeadline() {
         return banDeadline;
     }
 
-    public void setBanDeadline(Date banDeadline) {
+    public void setBanDeadline(Timestamp banDeadline) {
         this.banDeadline = banDeadline;
     }
 
-    public Date getDeleteTime() {
+    public Timestamp getDeleteTime() {
         return deleteTime;
     }
 
-    public void setDeleteTime(Date deleteTime) {
+    public void setDeleteTime(Timestamp deleteTime) {
         this.deleteTime = deleteTime;
     }
 }

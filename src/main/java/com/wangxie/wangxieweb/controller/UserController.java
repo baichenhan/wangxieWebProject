@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/editUserByUser",method = {RequestMethod.POST, RequestMethod.GET})
-    public Map editUserByUser(@NotNull HttpServletRequest request) {
+    public Map editUserByUser(@NotNull HttpServletRequest request) throws ParseException {
         UserData userdata = new UserData();
         userdata.username = request.getParameter("username");
         userdata.name = request.getParameter("name");
@@ -93,6 +94,7 @@ public class UserController {
         userdata.department = request.getParameter("department");
         userdata.status = request.getParameter("status");
         userdata.id = request.getParameter("id");
+        userdata.ban_deadline = request.getParameter("ban_deadline");
 
         return userService.editUserById(userdata);
     }

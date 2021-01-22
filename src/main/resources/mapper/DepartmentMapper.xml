@@ -10,4 +10,8 @@
         select name from department where id=#{0};
     </select>
 
+    <select id="getDepartmentIdByName" parameterType="String" resultType="int">
+        select id from department where name=#{0};
+    </select>
+
 </mapper>

@@ -11,6 +11,9 @@ import com.wangxie.wangxieweb.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +120,10 @@ public class userServiceimpl implements userService {//Service接口的实现层
         DataTmp.ban_deadline = UserTmp.getBanDeadline().toString();
         DataTmp.majorId = UserTmp.getMajorId();
         DataTmp.collegeId = majorMapper.findCollegeIdByMajorId(DataTmp.majorId);
+        DataTmp.departmentId = departmentMapper.getDepartmentIdByName(UserTmp.getDepartment());
+        DataTmp.roleId = UserTmp.getRoleId();
+        System.out.println("DataTmp.departmentId is : " + DataTmp.departmentId);
+        System.out.println("UserTmp.getDepartment() is : " + UserTmp.getDepartment());
         if(UserTmp.isSex())
             DataTmp.sex = "男";
         else
@@ -140,7 +147,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
         user.setStudentId(userdata.student_id);
         user.setPassword(userdata.password);
         user.setGrade(userdata.grade);
-        user.setBanDeadline(now());
+        user.setBanDeadline((Timestamp) now());
         user.setRoleId(Integer.parseInt(userdata.role));
         user.setMajorId(Integer.parseInt(userdata.major));
         user.setSex(Integer.parseInt(userdata.sex) == 1);
@@ -238,7 +245,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
     }
 
     @Override
-    public Map editUserById(UserData userdata) {
+    public Map editUserById(UserData userdata) throws ParseException {
         Map map = new HashMap<>();
         User user = new User();
         user.setUsername(userdata.username);
@@ -246,11 +253,11 @@ public class userServiceimpl implements userService {//Service接口的实现层
         user.setStudentId(userdata.student_id);
         user.setPassword(userdata.password);
         user.setGrade(userdata.grade);
-        user.setBanDeadline(now());
+        user.setBanDeadline(Timestamp.valueOf(userdata.ban_deadline));
         user.setRoleId(Integer.parseInt(userdata.role));
         user.setMajorId(Integer.parseInt(userdata.major));
         user.setSex(Integer.parseInt(userdata.sex) == 1);
-        user.setStatus(true);
+        user.setStatus(Integer.parseInt(userdata.status) == 1);
         user.setDepartment(departmentMapper.getDepartmentNameById(Integer.parseInt(userdata.department)));
         user.setId(Integer.parseInt(userdata.id));
 //        if(userMapper.isStudentIdExist(user.getStudentId()))
