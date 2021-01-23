@@ -33,18 +33,28 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
+<!--                        搜索栏开始-->
                         <div class="layui-card-body ">
-                            <form class="layui-form layui-col-space5" action="">
+                            <form class="layui-form layui-col-space5" lay-filter="demo">
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start"></div>
+                                    <input type="text" name="name" id="name" placeholder="姓名" autocomplete="off" class="layui-input"></div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end"></div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input"></div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <button class="layui-btn" lay-submit="" lay-filter="sreach">
-                                        <i class="layui-icon">&#xe615;</i></button>
+                                    <select name="grade" id="grade">
+                                        <option value="">年级</option>
+                                        <option value="2017">2017</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2019">2019</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                    </select>
                                 </div>
+                                <div class="layui-inline layui-show-xs-block" id="college"></div>
+                                <br>
+                                <div class="layui-inline layui-show-xs-block" id="major"></div>
+                                <div class="layui-inline layui-show-xs-block" id="department"></div>
+                                <div class="layui-inline layui-show-xs-block" id="role"></div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn" data-type="reload" type="button" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i></button></div>
                             </form>
                         </div>
                         <div class="layui-card-body ">
@@ -68,25 +78,67 @@
             <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteAll">删除</button>
         </div>
     </script>
-
-    <script>layui.use('laydate',
-        function() {
-            var laydate = layui.laydate;
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#start' //指定元素
-            });
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#end' //指定元素
-            });
-
-        });</script>
     <script>
-        layui.use('table', function(){
-            var table = layui.table;
+        layui.use(['table','form'], function(){
+            var table = layui.table, $ = layui.$, form = layui.form;
+
+            //搜索用通用接口开始
+            $.get('/common/getCollegeAndMajorList', function(result){
+                var str = '<select lay-filter="college" name="college">';
+                str+= '<option value="">学院</option>';
+                $.each(result, function (i, items) {
+                    str+= '<option value="' + items.value + '">' + items.name + '</option>';
+                });
+                str+='</select>'
+
+                var str1 = '<select name="major">';
+                str1+= '<option value="">专业</option>';
+                str1+= '<option value="' + '">' + "整个学院" + '</option>';
+                str1+='</select>'
+                $("#college").html(str);
+                $("#major").html(str1);
+                form.render('select', 'demo');
+            });
+
+            form.on('select(college)', function(data){
+                $.get('/common/getCollegeAndMajorList', function(result){
+                    var str2 = '<select name="major">';
+                    str2+= '<option value="' + '">' + "整个学院" + '</option>' ;
+                    for (var k=0;k<result.length;k++){
+                        if (data.value === result[k].value){
+                            $.each(result[k].major, function (i, items) {
+                                str2+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                            });
+                        }
+                    }
+                    str2+='</select>'
+                    $("#major").html(str2);
+                    form.render('select', 'demo');
+                });
+            });
+
+            $.get('/common/getDepartmentList', function(result){
+                var str = '<select name="department">';
+                str+= '<option value="">部门</option>';
+                $.each(result, function (i, items) {
+                    str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                });
+                str+='</select>'
+                $("#department").html(str);
+                form.render('select', 'demo');
+            });
+
+            $.get('/common/getRoleList', function(result){
+                var str = '<select name="role">';
+                str+= '<option value="">角色</option>';
+                $.each(result, function (i, items) {
+                    str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                });
+                str+='</select>'
+                $("#role").html(str);
+                form.render('select', 'demo');
+            });
+            //搜索用通用接口结束
 
             table.render({
                 elem: '#demo'
@@ -111,6 +163,7 @@
                     ,{field:'ban_deadline', title: '封禁时间', sort:true, hide: true}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:189}
                 ]]
+                ,id: 'memberTable'
             });
 
             table.on('toolbar(demo)', function(obj){
@@ -169,6 +222,22 @@
                 } else if(layEvent === 'edit'){ //编辑
                     xadmin.open('编辑','member-edit.html?id=' + obj.data.id)
                 }
+            });
+
+            //搜索按钮监听
+            form.on('submit(search)', function(data){
+                table.reload('memberTable', {
+                    page: {curr: 1}
+                    ,where: {
+                            name: data.field.name,
+                            grade: data.field.grade,
+                            college: data.field.college,
+                            major: data.field.major,
+                            department: data.field.department,
+                            role: data.field.role
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
         });
 

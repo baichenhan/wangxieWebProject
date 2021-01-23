@@ -1,6 +1,7 @@
 package com.wangxie.wangxieweb.service.impl;
 
 import com.wangxie.wangxieweb.entity.UserData;
+import com.wangxie.wangxieweb.entity.UserFilter;
 import com.wangxie.wangxieweb.entity.UserShow;
 import com.wangxie.wangxieweb.mapper.DepartmentMapper;
 import com.wangxie.wangxieweb.mapper.MajorMapper;
@@ -55,13 +56,8 @@ public class userServiceimpl implements userService {//Service接口的实现层
     }
 
     @Override
-    public UserShow getAllUser() {//获取数据库中所有用户名和真实姓名的接口的另一种写法
+    public UserShow getAllUser(UserFilter userFilter) {//获取数据库中所有用户名和真实姓名的接口的另一种写法
         List<User> userList = userMapper.findAll();//图省事继续用了findAll这个mapper，大家不要学我
-//        List<User> userList2 = new ArrayList<>();
-//        for (User user : userList) {
-//            user.setPassword(null);
-//            System.out.println(user.getMajorId());
-//        }
         UserShow usershow = new UserShow();
         usershow.code = 0;
         usershow.msg = "";
@@ -71,6 +67,18 @@ public class userServiceimpl implements userService {//Service接口的实现层
         for(int i=0; i<usershow.count; i++){
             User UserTmp = userList.get(i);
             if(UserTmp.getDeleteTime() == null || (UserTmp.getDeleteTime() != null&&UserTmp.getDeleteTime().after(now()))){
+                if(userFilter.name != null && !userFilter.name.equals(UserTmp.getName()))
+                    continue;
+                if(userFilter.grade != null && !userFilter.grade.equals(UserTmp.getGrade()))
+                    continue;
+                if(userFilter.roleId != null && !userFilter.roleId.equals(UserTmp.getRoleId()))
+                    continue;
+                if(userFilter.majorId != null && !userFilter.majorId.equals(UserTmp.getMajorId()))
+                    continue;
+                if(userFilter.collegeId != null && userFilter.collegeId != majorMapper.findCollegeIdByMajorId(UserTmp.getMajorId()))
+                    continue;
+                if(userFilter.departmentId != null && userFilter.departmentId != departmentMapper.getDepartmentIdByName(UserTmp.getDepartment()))
+                    continue;
                 UserData DataTmp = new UserData();
                 DataTmp.id = UserTmp.getId().toString();
                 DataTmp.name = UserTmp.getName();
@@ -96,7 +104,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
             }
         }
 //        System.out.println(usershow.data.size());
-
+        usershow.count = usershow.data.size();
         return usershow;//返回前台的是一个UserShow类的对象，内含一个data类的list
     }
 
@@ -225,7 +233,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
                 usershow.data.add(DataTmp);
             }
         }
-
+        usershow.count = usershow.data.size();
         return usershow;
     }
 
@@ -251,7 +259,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
         user.setUsername(userdata.username);
         user.setName(userdata.name);
         user.setStudentId(userdata.student_id);
-        user.setPassword(userdata.password);
+//        user.setPassword(userdata.password);
         user.setGrade(userdata.grade);
         user.setBanDeadline(Timestamp.valueOf(userdata.ban_deadline));
         user.setRoleId(Integer.parseInt(userdata.role));

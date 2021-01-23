@@ -26,7 +26,7 @@
         <!-- 顶部开始 -->
         <div class="container">
             <div class="logo">
-                <a href="./index.html">X-admin v2.2</a></div>
+                <a href="./index.html">网协网站后台</a></div>
             <div class="left_open">
                 <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
             </div>
@@ -35,10 +35,6 @@
                     <a href="javascript:;">admin</a>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
-                        <dd>
-                            <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>
-                        <dd>
-                            <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
                         <dd>
                             <a href="./login.html">退出</a></dd>
                     </dl>
@@ -70,7 +66,7 @@
                                     <cite>活动列表</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('会员删除','member-del.html')">
+                                <a onclick="xadmin.add_tab('会员删除','member-del.html',true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>会员删除</cite></a>
                             </li>
@@ -155,6 +151,21 @@
                                 <a onclick="xadmin.add_tab('权限管理','admin-rule.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>权限管理</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('部门管理','department-list.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>部门管理</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('专业管理','major-list.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>专业管理</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('导航管理','menu-list.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>导航管理</cite></a>
                             </li>
                         </ul>
                     </li>

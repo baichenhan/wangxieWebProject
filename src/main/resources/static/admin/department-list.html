@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>网协网站后台</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a href="">会员管理</a>
+                <a>
+                    <cite>会员列表</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5" action="">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input class="layui-input" autocomplete="off" placeholder="部门名称" name="name"></div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon">添加</i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table" id="demo" lay-filter="demo"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteAll">删除</button>
+        </div>
+    </script>
+    <script>
+        layui.use(['form', 'table'], function(){
+            var table = layui.table, form = layui.form;
+
+            table.render({
+                elem: '#demo'
+                ,toolbar: '#toolbarDemo'
+                ,url:'department2.php'
+                ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增\
+                ,cols: [[
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field:'id', title: 'ID', sort: true}
+                    ,{field:'name', title: '部门名称'}
+                    ,{field:'status', title: '状态'}
+                    ,{field:'recruit', title: '招新'}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 132}
+                ]]
+            });
+
+            table.on('toolbar(demo)', function(obj){
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch(obj.event){
+                    case 'deleteAll':
+                        data =checkStatus.data;
+                        if (data.length<1){
+                            layer.alert('请勾选信息！');
+                            return false;
+                        }
+                        var ids=[];
+                        for (var i = 0; i < data.length; i++) {
+                            ids += data[i].id + ',';
+                        }
+                        ids = ids.substr(0, ids.length-1);
+                        layer.confirm('确认要删除这些数据吗？',function(index){
+                            $.post("delete.php", {id:ids}, function(result){
+                                if(result.status === 1){
+                                    layer.msg(result.message,{icon:1,time:1000},function() {location.reload();});
+                                } else {
+                                     layer.msg(result.message,{icon:2,time:2000});
+                                }
+                            })
+                        });
+                        break;
+                }
+            });
+
+            table.on('tool(demo)', function(obj){
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+                if(layEvent === 'del'){ //删除
+                    layer.confirm('真的删除该行么', function(index){
+                        //向服务端发送删除指令
+                        var id = data.id;
+                        $.post('delete.php', {id:id}, function(result){
+                            if(result.status === 1){
+                                layer.msg(result.message,{icon:1,time:1000}, function(){
+                                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                    layer.close(index);
+                                });
+                            } else {
+                                layer.msg(result.message,{icon:2,time:2000});
+                            }
+                        })
+                    });
+                } else if(layEvent === 'edit') { //编辑
+                    xadmin.open('编辑','department-edit.html?id=' + obj.data.id)
+                }
+            });
+
+            form.on('submit(add)', function(data){
+                $.post("add.php", function(result){
+                    if(result.status === 1){
+                        layer.msg(result.message,{icon:1,time:1000},function() {location.reload();});
+                    } else {
+                        layer.msg(result.message,{icon:2,time:2000});
+                    }
+                })
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+        });
+
+    </script>
+
+</html>

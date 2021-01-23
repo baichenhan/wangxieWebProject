@@ -2,6 +2,7 @@ package com.wangxie.wangxieweb.controller;
 
 import com.wangxie.wangxieweb.entity.User;
 import com.wangxie.wangxieweb.entity.UserData;
+import com.wangxie.wangxieweb.entity.UserFilter;
 import com.wangxie.wangxieweb.entity.UserShow;
 import com.wangxie.wangxieweb.mapper.UserMapper;
 import com.wangxie.wangxieweb.service.userService;
@@ -30,9 +31,18 @@ public class UserController {
         return userService.findAll();
     }
 
-    @RequestMapping("/getAllUser")
-    public UserShow getAllUser(){//获取数据库所以用户的用户名和真实姓名
-        return userService.getAllUser();
+    @RequestMapping(value = "/getAllUser",method = {RequestMethod.POST, RequestMethod.GET})
+    public UserShow getAllUser(HttpServletRequest request){//获取所有用户并传到前台
+        UserFilter userFilter = new UserFilter();
+        userFilter.name = request.getParameter("name");
+        userFilter.grade = request.getParameter("grade");
+        userFilter.roleIdString = request.getParameter("role");
+        userFilter.majorIdString = request.getParameter("major");
+        userFilter.collegeIdString = request.getParameter("college");
+        userFilter.departmentIdString = request.getParameter("department");
+        userFilter.format();
+//        userFilter.printf();
+        return userService.getAllUser(userFilter);
     }
 
     @RequestMapping(value = "/getUserById",method = {RequestMethod.POST, RequestMethod.GET})
@@ -62,9 +72,23 @@ public class UserController {
 
     @RequestMapping(value = "/deleteUserById",method = {RequestMethod.POST, RequestMethod.GET})
     public Map deleteUserById(@NotNull HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
+        Map map = new HashMap<>();
+        map.put("status", 1);
+        String message = "";
+        String ids = request.getParameter("id");
+        String[] idArray = ids.split(",");
+        for(String idEvery : idArray) {
+            int id = Integer.parseInt(idEvery);
+            if(!userService.deleteUserById(id).get("status").equals(1)) {
+                map.put("status", 0);
+                message += "ID为" + id + "的用户删除失败！";
+            }
+        }
 //        System.out.println("delete id is : " + id);
-        return userService.deleteUserById(id);
+        if(message.equals(""))
+            message = "删除成功~";
+        map.put("message", message);
+        return map;
     }
 
     @RequestMapping("/getDeleteUser")
@@ -74,9 +98,25 @@ public class UserController {
 
     @RequestMapping(value = "/recoverDeleteUser",method = {RequestMethod.POST, RequestMethod.GET})
     public Map recoverDeleteUser(@NotNull HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
-//        System.out.println("recover id is : " + id);
-        return userService.recoverDeleteUserById(id);
+//        int id = Integer.parseInt(request.getParameter("id"));
+////        System.out.println("recover id is : " + id);
+//        return userService.recoverDeleteUserById(id);
+        Map map = new HashMap<>();
+        map.put("status", 1);
+        String message = "";
+        String ids = request.getParameter("id");
+        String[] idArray = ids.split(",");
+        for(String idEvery : idArray) {
+            int id = Integer.parseInt(idEvery);
+            if(!userService.recoverDeleteUserById(id).get("status").equals(1)) {
+                map.put("status", 0);
+                message += "ID为" + id + "的用户恢复失败！";
+            }
+        }
+        if(message.equals(""))
+            message = "恢复成功~";
+        map.put("message", message);
+        return map;
     }
 
     @RequestMapping(value = "/editUserByUser",method = {RequestMethod.POST, RequestMethod.GET})
