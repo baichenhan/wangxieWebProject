@@ -14,7 +14,7 @@ import java.util.Map;
 public interface userService {//Service层的接口声明，此处无解释。。。。。
     List<Map<String,String>> findAll();
     UserShow getAllUser(UserFilter userFilter);
-    boolean loginJudge(String username, String password);
+    String loginJudge(String username, String password);
     UserData findUserById(int id);
     Map addUser(UserData userdata);
     Map deleteUserById(int id);

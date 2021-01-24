@@ -4,7 +4,7 @@ spring:
   #数据库连接配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.21.0.2:3306/wangxietest2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://bj-cynosdbmysql-grp-h8mwhibg.sql.tencentcdb.com:24983/wangxietest2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: AK47m4a1
   jackson:
@@ -12,7 +12,10 @@ spring:
       FAIL_ON_EMPTY_BEANS: false
   resources:
     chain:
-     cache: false
+      cache: false
+  mvc:
+    favicon:
+      enabled: false
   #若使用jsp则打开以下配置
 #  mvc:
 #    view:
@@ -20,8 +23,8 @@ spring:
 #      suffix: .jsp
   #若使用html则使用thymeleaf及以下配置
   thymeleaf:
-    prefix: classpath:/static/html/
-    suffix: .html
+#    prefix: classpath:/
+#    suffix: .html
     cache: false #关闭缓存
 #mybatis的相关配置
 mybatis:

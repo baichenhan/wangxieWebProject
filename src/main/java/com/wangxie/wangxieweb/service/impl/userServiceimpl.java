@@ -109,9 +109,9 @@ public class userServiceimpl implements userService {//Service接口的实现层
     }
 
     @Override
-    public boolean loginJudge(String username, String password) {//判断用户名密码正确性，返回值0表示用户名或密码错误，1表示正确可登录
-        Integer numberOfThisUser = userMapper.loginJudge(username, password);//调用mapper层接口，实际是判断用户名为username值且密码为password值的记录条数
-        return numberOfThisUser > 0;
+    public String loginJudge(String username, String password) {//判断用户名密码正确性，返回值0表示用户名或密码错误，1表示正确可登录
+        String loginName = userMapper.loginJudge(username, password);//调用mapper层接口，实际是判断用户名为username值且密码为password值的记录条数
+        return loginName;
     }
 
     @Override

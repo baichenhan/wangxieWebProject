@@ -21,11 +21,13 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-body ">
-                            <blockquote class="layui-elem-quote">欢迎管理员：
-                                <span class="x-red">test</span>！当前时间:2018-04-25 20:50:53
-                            </blockquote>
-                        </div>
+                        <form layui-filter="demo">
+                            <div class="layui-card-body " id="welcome">
+<!--                                <blockquote class="layui-elem-quote">欢迎管理员：-->
+<!--                                    <span class="x-red">test</span>！当前时间:2018-04-25 20:50:53-->
+<!--                                </blockquote>-->
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="layui-col-md12">
@@ -201,4 +203,50 @@
         </div>
         </div>
     </body>
+
+    <script>layui.use(['form', 'layer'], function() {
+        $ = layui.jquery;
+        $.ajaxSettings.async = false;
+        function getCookie(cname)
+        {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++)
+            {
+                var c = ca[i].trim();
+                if (c.indexOf(name)===0) return c.substring(name.length,c.length);
+            }
+            return "";
+        }
+
+        var str = " <blockquote className=\"layui-elem-quote\">欢迎管理员： <span className=\"x-red\">";
+        str += getCookie("wangxie_loginName") + "&nbsp&nbsp";
+        str += "</span>！当前时间 : ";
+        str += "<label id=\"nowTime\" name=\"nowTime\">";
+        // str += "</>";
+        str += "</blockquote>";
+        $("#welcome").html(str);
+        setInterval(function() {gettime();}, 1000);
+
+        // window.onload=showtime();
+        function gettime(){
+            var date = new Date();
+            var weekDay = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            var day = date.getDate();
+            var hours=date.getHours();
+            var minutes=date.getMinutes();
+            var seconds=date.getSeconds();
+            var week = weekDay[date.getDay()];
+            var str1 = year+"年"+month+"月"+day+"日&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+week + hours+":"+minutes+":"+seconds;
+            $("#nowTime").html(str1);
+            // $("#time").html(hours+":"+minutes+":"+seconds);
+        }
+
+
+    })
+
+    </script>
+
 </html>

@@ -28,7 +28,7 @@
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
             <hr class="hr15">
-            <button class="layui-btn-lg layui-btn" lay-filter="login" lay-submit="" style="width:100%;" type="button">修改</button>
+            <button class="layui-btn-lg layui-btn" lay-filter="login" lay-submit="" style="width:100%;" type="button">登录</button>
             <hr class="hr20" >
         </form>
     </div>
@@ -37,7 +37,7 @@
    layui.use(['form', 'layer'], function() {
        var form = layui.form, layer = layui.layer;
        form.on('submit(login)', function (data) {
-           $.post('add.php', data.field, function (result) {
+           $.post('/login/judge', data.field, function (result) {
                if (result.status === 1) {
                    window.location.href = 'index.html'
                } else {

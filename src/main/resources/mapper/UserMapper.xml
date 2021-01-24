@@ -5,8 +5,8 @@
         select * from user;
     </select> <!-- 从数据库中拉出user表的所有内容，仅做调试用，不建议大家这么写，业务逻辑中用什么拉什么 -->
 
-    <select id="loginJudge" parameterType="String" resultType="Integer">
-        select count(username) from user where  username=#{username} and password=#{password};
+    <select id="loginJudge" parameterType="String" resultType="String">
+        select name from user where  username=#{username} and password=#{password};
     </select> <!-- 此语句对应loginJudge接口，实际是判断user表中用户名为username值和密码password值的记录的条数 -->
 
     <select id="findUserById" resultType="User">

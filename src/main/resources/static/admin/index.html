@@ -32,7 +32,12 @@
             </div>
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">admin</a>
+                    <form layui-filter="demo">
+                    <div name="loginName" id="loginName">
+
+                    </div>
+<!--                    <a href="javascript:;">admin</a>-->
+                    </form>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
                         <dd>
@@ -212,5 +217,27 @@
         <!-- 右侧主体结束 -->
         <!-- 中部结束 -->
     </body>
+
+    <script>layui.use(['form', 'layer'], function (){
+        $ = layui.jquery;
+
+        function getCookie(cname)
+        {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++)
+            {
+                var c = ca[i].trim();
+                if (c.indexOf(name)===0) return c.substring(name.length,c.length);
+            }
+            return "";
+        }
+
+        var loginName = getCookie("wangxie_loginName");
+        var str = "<a href=\"javascript:;\">" + loginName + "</a>";
+        $("#loginName").html(str);
+    })
+
+    </script>
 
 </html>
