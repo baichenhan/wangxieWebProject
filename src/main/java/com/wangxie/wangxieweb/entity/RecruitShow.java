@@ -6,5 +6,5 @@ public class RecruitShow {//与前台接口相对应
     public int code;
     public String msg;
     public int count;
-    public List<UserData> data;
+    public List<UserData> dat;
 }
