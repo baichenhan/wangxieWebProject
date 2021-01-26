@@ -60,7 +60,6 @@ public class userServiceimpl implements userService {//Service接口的实现层
         usershow.msg = "";
         usershow.count = userList.size();
         usershow.data = new ArrayList<>();
-//        System.out.println(usershow.count);
         for(int i=0; i<usershow.count; i++){
             User UserTmp = userList.get(i);
             if(UserTmp.getDeleteTime() == null || (UserTmp.getDeleteTime() != null&&UserTmp.getDeleteTime().after(now()))){

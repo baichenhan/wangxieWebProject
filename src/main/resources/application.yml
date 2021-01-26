@@ -12,10 +12,7 @@ spring:
       FAIL_ON_EMPTY_BEANS: false
   resources:
     chain:
-      cache: false
-  mvc:
-    favicon:
-      enabled: false
+     cache: false
   #若使用jsp则打开以下配置
 #  mvc:
 #    view:
@@ -23,8 +20,8 @@ spring:
 #      suffix: .jsp
   #若使用html则使用thymeleaf及以下配置
   thymeleaf:
-#    prefix: classpath:/
-#    suffix: .html
+    prefix: classpath:/static/html/
+    suffix: .html
     cache: false #关闭缓存
 #mybatis的相关配置
 mybatis:
