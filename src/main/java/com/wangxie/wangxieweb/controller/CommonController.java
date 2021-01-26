@@ -46,7 +46,6 @@ public class CommonController {
 
     @RequestMapping("getCollegeAndMajorList")
     public List<MajorShow> getCollegeAndMajorList() throws InterruptedException {
-//        Thread.sleep(1000);
         return majorService.getCollegeAndMajorList();
     }
 }

@@ -19,10 +19,10 @@ spring:
 #      prefix: /WEB-INF/jsp/
 #      suffix: .jsp
   #若使用html则使用thymeleaf及以下配置
-  thymeleaf:
-    prefix: classpath:/static/html/
-    suffix: .html
-    cache: false #关闭缓存
+#  thymeleaf:
+#    prefix: classpath:/static/html/
+#    suffix: .html
+#    cache: false #关闭缓存
 #mybatis的相关配置
 mybatis:
   #mapper配置文件

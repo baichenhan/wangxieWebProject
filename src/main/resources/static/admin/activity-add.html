@@ -35,7 +35,6 @@
                         </label>
                         <div class="layui-input-inline" id="department"></div>
                     </div>
-                    </div>
                     <div class="layui-form-item">
                         <label for="create_time" class="layui-form-label">
                             <span class="x-red">*</span>开始时间
@@ -64,7 +63,7 @@
                             <span class="x-red">*</span>登记人
                         </label>
                         <div class="layui-input-inline" id="create_user">
-                            <input type="text" id="create_user" name="create_user" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="creater_user" name="create_user" required="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -83,7 +82,8 @@
               </form>
             </div>
         </div>
-        <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/wangeditor/dist/wangEditor.min.js"></script>
         <script type="text/javascript">
             const E = window.wangEditor;
             const editor = new E('#content');
@@ -110,12 +110,11 @@
                     ,type: 'datetime'
                 });
 
-
-
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
-                    $.post('add.php', data.field, function(result){
+                    data.field.participant = getCheckBoxValue();
+                    $.post('/activity/addActivity', data.field, function(result){
                         console.log(data.field)
                         if(result.status === 0) {
                             layer.alert(result.message, {icon: 5});
@@ -130,7 +129,7 @@
                 });
 
                 $.get('/common/getDepartmentList', function(result){
-                    var str = '<select name="department" id="department1">';
+                    var str = '<select name="department">';
                     $.each(result, function (i, items) {
                         str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
                     });
@@ -144,7 +143,7 @@
                     for (var k=0;k<result.length;k++){
                         str+= "<li>";
                         $.each(result[k].user, function (i, items) {
-                            str+= '<input type="checkbox" name="participant['+ items.user_id +']" title="' + items.user_name + '">';
+                            str+= '<input type="checkbox" name="participant" title="' + items.user_name + '" value="' + items.user_id + '"' + '">';
                         });
                         str+= "</li>"
                     }
@@ -152,6 +151,18 @@
                     $("#participant").html(str);
                     form.render('checkbox', 'demo');
                 });
+
+                function getCheckBoxValue() {
+                    var str = "";
+                    $("input[name='participant']").each(function() {
+                        if($(this).prop("checked") === true) {
+                            str += ($(this).val() + ",")
+                        }
+                    });
+                    console.log("this is getCheckBoxValue : " + str);
+                    return str;
+                }
+
             });</script>
     </body>
 </html>

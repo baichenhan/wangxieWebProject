@@ -215,24 +215,6 @@
                     form.render('select', 'demo');
                 });
 
-                // $.get('/common/getCollegeAndMajorList', function(result){
-                //     var str1 = '<select id="major1" name="major">';
-                //     console.log("myCollegeId is : " + myCollegeId);
-                //     console.log("college1.val() is : " + $('#college1').val());
-                //     for (var k=0;k<result.length;k++){
-                //         if (myCollegeId === result[k].value){
-                //             $.each(result[k].major, function (i, items) {
-                //                 str1+= '<option value="' + items.value + '">' + items.name + '</option>' ;
-                //             });
-                //         }
-                //     }
-                //     str1+='</select>'
-                //     $("#major").html(str1);
-                //     $("#major1").val(myMajorId);
-                //     console.log("major1 after set val " + $("#major1").val());
-                //     form.render('select', 'demo');
-                // });
-
                 $.get('/common/getDepartmentList', function(result){
                     var str = '<select name="department" id="department1">';
                     $.each(result, function (i, items) {
