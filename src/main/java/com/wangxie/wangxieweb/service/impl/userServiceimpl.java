@@ -1,13 +1,10 @@
 package com.wangxie.wangxieweb.service.impl;
 
-import com.wangxie.wangxieweb.entity.UserData;
-import com.wangxie.wangxieweb.entity.UserFilter;
-import com.wangxie.wangxieweb.entity.UserShow;
+import com.wangxie.wangxieweb.entity.*;
 import com.wangxie.wangxieweb.mapper.DepartmentMapper;
 import com.wangxie.wangxieweb.mapper.MajorMapper;
 import com.wangxie.wangxieweb.mapper.RoleMapper;
 import com.wangxie.wangxieweb.service.userService;
-import com.wangxie.wangxieweb.entity.User;
 import com.wangxie.wangxieweb.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -288,5 +285,26 @@ public class userServiceimpl implements userService {//Service接口的实现层
             map.put("message", "修改失败~");
         }
         return map;
+    }
+
+    @Override
+    public List<Map> getAllUserByDepartment() {
+        List<Department> departments = new ArrayList<Department>();
+        departments = departmentMapper.getAllDepartment();
+        List<Map> mapList = new ArrayList<>();
+        for(Department department : departments) {
+            Map mapListTmp = new HashMap<>();
+            List<Map> user = new ArrayList<>();
+            mapListTmp.put("department", department.getName());
+            for(User userTmp : userMapper.findUserByDepartment(department.getName())) {
+                Map mapListUserListTmp = new HashMap<>();
+                mapListUserListTmp.put("user_id", userTmp.getId().toString());
+                mapListUserListTmp.put("user_name", userTmp.getName());
+                user.add(mapListUserListTmp);
+            }
+            mapListTmp.put("user",user);
+            mapList.add(mapListTmp);
+        }
+        return mapList;
     }
 }

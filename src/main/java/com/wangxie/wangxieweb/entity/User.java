@@ -3,7 +3,7 @@ package com.wangxie.wangxieweb.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class User  implements Serializable {//对应用户user的实体类
+public class User  implements Serializable {//实体类，对应数据库的user表的一条记录，与数据库字段一一对应。
     private String username;//用户名
     private String password;//密码
     private String grade;//年级

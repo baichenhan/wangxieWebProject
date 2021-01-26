@@ -43,4 +43,8 @@
             where id=#{id}
     </update>
 
+    <select id="findUserByDepartment" parameterType="String" resultType="User">
+        select id,name from user where department=#{0};
+    </select>
+
 </mapper>

@@ -21,4 +21,5 @@ public interface userService {//Service层的接口声明，此处无解释。�
     UserShow getDeleteUser();
     Map recoverDeleteUserById(int id);
     Map editUserById(UserData userdata) throws ParseException;
+    List<Map> getAllUserByDepartment();
 }

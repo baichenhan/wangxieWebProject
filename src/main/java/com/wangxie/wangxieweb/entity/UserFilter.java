@@ -1,6 +1,6 @@
 package com.wangxie.wangxieweb.entity;
 
-public class UserFilter {
+public class UserFilter {//xxxFilter，数据过滤器，用来进行筛选的filter，filter为全空时为选所有user，有值时，仅选匹配成功的user
     public String name;
     public String grade;
     public String departmentIdString;

@@ -33,9 +33,8 @@
                         <label for="department" class="layui-form-label">
                             <span class="x-red">*</span>负责部门
                         </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="department" name="department" required="" autocomplete="off" class="layui-input">
-                        </div>
+                        <div class="layui-input-inline" id="department"></div>
+                    </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="create_time" class="layui-form-label">
@@ -64,7 +63,7 @@
                         <label for="create_user" class="layui-form-label">
                             <span class="x-red">*</span>登记人
                         </label>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-inline" id="create_user">
                             <input type="text" id="create_user" name="create_user" required="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -88,6 +87,7 @@
         <script type="text/javascript">
             const E = window.wangEditor;
             const editor = new E('#content');
+            editor.config.zIndex = 1;
             const $text = $('#content_text');
             editor.config.onchange = function (html) {
                 // 第二步，监控变化，同步更新到 textarea
@@ -110,6 +110,8 @@
                     ,type: 'datetime'
                 });
 
+
+
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
@@ -127,7 +129,17 @@
                     return false;
                 });
 
-                $.get('user.php', function(result){
+                $.get('/common/getDepartmentList', function(result){
+                    var str = '<select name="department" id="department1">';
+                    $.each(result, function (i, items) {
+                        str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                    });
+                    str+='</select>'
+                    $("#department").html(str);
+                    form.render('select', 'demo');
+                });
+
+                $.get('/user/getUserWithDepartment', function(result){
                     var str = "<ul>";
                     for (var k=0;k<result.length;k++){
                         str+= "<li>";

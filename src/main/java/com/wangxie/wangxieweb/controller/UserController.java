@@ -138,4 +138,10 @@ public class UserController {
 
         return userService.editUserById(userdata);
     }
+
+    @RequestMapping("/getUserWithDepartment")
+    public List<Map> getUserWithDepartment() {
+        return userService.getAllUserByDepartment();
+    }
+
 }
