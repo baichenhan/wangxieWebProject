@@ -3,6 +3,7 @@ package com.wangxie.wangxieweb.controller;
 import com.wangxie.wangxieweb.service.userService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,10 +42,13 @@ public class LoginController {//登录逻辑的前端控制器
             map.put("status", 1);
             map.put("message", "登录成功");
             map.put("name", judgeName);
-            Cookie cookie = new Cookie("wangxie_loginName", judgeName);
+            Cookie cookie = new Cookie("wangxie_loginName", judgeName);//设置前端cookie
             cookie.setMaxAge(30 * 60);
             cookie.setPath("/");
             response.addCookie(cookie);
+
+            HttpSession session = request.getSession();//设置服务器端session
+            session.setAttribute("user", judgeName);
         }
         else {
             map.put("status", 0);

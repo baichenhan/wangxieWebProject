@@ -16,6 +16,7 @@ import java.util.Map;
 public class ActivityController {
     @RequestMapping(value = "/addActivity", method = {RequestMethod.POST, RequestMethod.GET})
     public Map addActivity(@NotNull HttpServletRequest request) {
+
         Map map = new HashMap<>();
         map.put("status", 1);
         map.put("message", "添加失败");

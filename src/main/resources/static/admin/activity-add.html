@@ -26,7 +26,7 @@
                           <span class="x-red">*</span>活动名称
                       </label>
                       <div class="layui-input-inline">
-                          <input type="text" id="name" name="name" required="" autocomplete="off" class="layui-input">
+                          <input type="text" id="name" name="name" lay-verify="required" autocomplete="off" class="layui-input">
                       </div>
                   </div>
                     <div class="layui-form-item">
@@ -40,7 +40,7 @@
                             <span class="x-red">*</span>开始时间
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="create_time" name="create_time" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="create_time" name="create_time" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -48,7 +48,7 @@
                             <span class="x-red">*</span>结束时间
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="end_time" name="end_time" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="end_time" name="end_time" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -58,12 +58,12 @@
                         <div class="layui-input-block" id="content"></div>
                     </div>
                     <textarea name="content" id="content_text" hidden></textarea>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" style="display: none">
                         <label for="create_user" class="layui-form-label">
                             <span class="x-red">*</span>登记人
                         </label>
                         <div class="layui-input-inline" id="create_user">
-                            <input type="text" id="creater_user" name="create_user" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="creater_user" name="create_user" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -114,6 +114,7 @@
                 form.on('submit(add)',
                 function(data) {
                     data.field.participant = getCheckBoxValue();
+                    data.field.create_user = getCookie("wangxie_loginName");
                     $.post('/activity/addActivity', data.field, function(result){
                         console.log(data.field)
                         if(result.status === 0) {
@@ -131,7 +132,7 @@
                 $.get('/common/getDepartmentList', function(result){
                     var str = '<select name="department">';
                     $.each(result, function (i, items) {
-                        str+= '<option value="' + items.value + '">' + items.name + '</option>' ;
+                        str+= '<option value="' + items.name + '">' + items.name + '</option>' ;
                     });
                     str+='</select>'
                     $("#department").html(str);
@@ -161,6 +162,21 @@
                     });
                     console.log("this is getCheckBoxValue : " + str);
                     return str;
+                }
+
+                function getCookie(cname)
+                {
+                    var name = cname + "=";
+                    var ca = document.cookie.split(';');
+                    for(var i=0; i<ca.length; i++)
+                    {
+                        var c = ca[i].trim();
+                        if (c.indexOf(name)===0) {
+                            console.log("cookie " + cname + " is : " + c.substring(name.length,c.length));
+                            return c.substring(name.length,c.length);
+                        }
+                    }
+                    return "";
                 }
 
             });</script>
