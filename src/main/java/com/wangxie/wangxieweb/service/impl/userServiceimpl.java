@@ -255,7 +255,6 @@ public class userServiceimpl implements userService {//Service接口的实现层
         user.setUsername(userdata.username);
         user.setName(userdata.name);
         user.setStudentId(userdata.student_id);
-//        user.setPassword(userdata.password);
         user.setGrade(userdata.grade);
         user.setBanDeadline(Timestamp.valueOf(userdata.ban_deadline));
         user.setRoleId(Integer.parseInt(userdata.role));
@@ -264,17 +263,6 @@ public class userServiceimpl implements userService {//Service接口的实现层
         user.setStatus(Integer.parseInt(userdata.status) == 1);
         user.setDepartment(departmentMapper.getDepartmentNameById(Integer.parseInt(userdata.department)));
         user.setId(Integer.parseInt(userdata.id));
-//        if(userMapper.isStudentIdExist(user.getStudentId()))
-//        {
-//            map.put("status", 0);
-//            map.put("message", "学号已存在，修改失败");
-//            return map;
-//        }
-//        if(userMapper.isUsernameExist(user.getUsername())){
-//            map.put("status", 0);
-//            map.put("message", "用户名已存在，修改失败");
-//            return map;
-//        }
         if(userMapper.editUserByUser(user) > 0){
             map.put("status", 1);
             map.put("message", "修改成功~");

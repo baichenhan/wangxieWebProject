@@ -36,11 +36,11 @@
                         <div class="layui-input-inline" id="department"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="create_time" class="layui-form-label">
+                        <label for="start_time" class="layui-form-label">
                             <span class="x-red">*</span>开始时间
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="create_time" name="create_time" lay-verify="required" autocomplete="off" class="layui-input">
+                            <input type="text" id="start_time" name="start_time" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -59,18 +59,18 @@
                     </div>
                     <textarea name="content" id="content_text" hidden></textarea>
                     <div class="layui-form-item" style="display: none">
-                        <label for="create_user" class="layui-form-label">
+                        <label for="leader_user" class="layui-form-label">
                             <span class="x-red">*</span>登记人
                         </label>
                         <div class="layui-input-inline" id="create_user">
-                            <input type="text" id="creater_user" name="create_user" autocomplete="off" class="layui-input">
+                            <input type="text" id="leader_user" name="leader_user" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="participant" class="layui-form-label">
+                        <label for="participant_id" class="layui-form-label">
                             <span class="x-red">*</span>参与者
                         </label>
-                        <div class="layui-input-block" id="participant"></div>
+                        <div class="layui-input-block" id="participant_id"></div>
                     </div>
                     <div class="layui-form-item">
                       <label for="department" class="layui-form-label">
@@ -101,7 +101,7 @@
                 var form = layui.form, layer = layui.layer, laydate = layui.laydate;
 
                 laydate.render({
-                    elem: '#create_time'
+                    elem: '#start_time'
                     ,type: 'datetime'
                 });
 
@@ -113,10 +113,10 @@
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
-                    data.field.participant = getCheckBoxValue();
-                    data.field.create_user = getCookie("wangxie_loginName");
+                    data.field.participant_id = getCheckBoxValue();
+                    data.field.leader_user = getCookie("wangxie_loginName");
+                    console.log(data.field)
                     $.post('/activity/addActivity', data.field, function(result){
-                        console.log(data.field)
                         if(result.status === 0) {
                             layer.alert(result.message, {icon: 5});
                         } else {
@@ -144,18 +144,18 @@
                     for (var k=0;k<result.length;k++){
                         str+= "<li>";
                         $.each(result[k].user, function (i, items) {
-                            str+= '<input type="checkbox" name="participant" title="' + items.user_name + '" value="' + items.user_id + '"' + '">';
+                            str+= '<input type="checkbox" name="participant_id" title="' + items.user_name + '" value="' + items.user_id + '"' + '">';
                         });
                         str+= "</li>"
                     }
                     str+="</ul>";
-                    $("#participant").html(str);
+                    $("#participant_id").html(str);
                     form.render('checkbox', 'demo');
                 });
 
                 function getCheckBoxValue() {
                     var str = "";
-                    $("input[name='participant']").each(function() {
+                    $("input[name='participant_id']").each(function() {
                         if($(this).prop("checked") === true) {
                             str += ($(this).val() + ",")
                         }

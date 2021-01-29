@@ -91,7 +91,7 @@
             table.render({
                 elem: '#demo'
                 ,toolbar: '#toolbarDemo'
-                ,url:'activity.php'
+                ,url:'/activity/getAllActivity'
                 ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增\
                 ,page: true
                 ,cols: [[
@@ -99,10 +99,10 @@
                     ,{field:'id', title: 'ID', sort: true, hide:true}
                     ,{field:'name', title: '活动名称', sort:true}
                     ,{field:'department', title: '负责部门'}
-                    ,{field:'start_time', title: '开始时间', sort:true}
-                    ,{field:'end_time', title: '结束时间', sort:true}
-                    ,{field:'create_user', title: '登记人', sort:true}
-                    ,{field:'participant', title: '参与者', hide:true}
+                    ,{field:'startTime', title: '开始时间', sort:true}
+                    ,{field:'endTime', title: '结束时间', sort:true}
+                    ,{field:'leaderUser', title: '登记人', sort:true}
+                    ,{field:'participantId', title: '参与者', hide:true}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:189}
                 ]]
             });

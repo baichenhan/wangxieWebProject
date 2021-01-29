@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wangxie.wangxieweb.mapper.ActivityMapper">
+    <insert id="addActivity" parameterType="Activity" useGeneratedKeys="true" keyProperty="id">
+        insert into activity (name, content, start_time, end_time, leader_user,
+                              participant_id, department)
+                              values (#{name}, #{content}, #{startTime}, #{endTime},
+                                      #{leaderUser}, #{participantId}, #{department});
+    </insert>
+
+    <select id="getAllActivity" resultType="Activity">
+        select * from activity;
+    </select>
+
+</mapper>

@@ -18,4 +18,5 @@ public interface UserMapper {//mapper层接口，mybitis框架的部分，接口
     int recoverDeleteUserById(int id);
     int editUserByUser(User user);
     List<User> findUserByDepartment(String department);
+    String findNameById(Integer id);
 }

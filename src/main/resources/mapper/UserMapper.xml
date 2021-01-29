@@ -47,4 +47,8 @@
         select id,name from user where department=#{0};
     </select>
 
+    <select id="findNameById" parameterType="int" resultType="String">
+        select name from user where id=#{0};
+    </select>
+
 </mapper>
