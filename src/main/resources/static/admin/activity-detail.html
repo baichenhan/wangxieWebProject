@@ -36,16 +36,16 @@
                         <td id="department"></td></tr>
                     <tr>
                         <th>开始时间</th>
-                        <td id="start_time"></td></tr>
+                        <td id="startTime"></td></tr>
                     <tr>
                         <th>结束时间</th>
-                        <td id="end_time"></td></tr>
+                        <td id="endTime"></td></tr>
                     <tr>
                         <th>登记人</th>
-                        <td id="create_user"></td></tr>
+                        <td id="leaderUser"></td></tr>
                     <tr>
                         <th>参与人</th>
-                        <td id="participant"></td></tr>
+                        <td id="participantId"></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -54,15 +54,15 @@
             $ = layui.jquery;
             var id = getQueryVariable('id');
 
-            $.get('activityDetail.php', {id:id}, function(result){
+            $.get('/activity/getActivityById', {id:id}, function(result){
                 $("#id").text(result.id);
                 $("#name").text(result.name);
                 $("#content").html(result.content);
                 $("#department").text(result.department);
-                $("#start_time").text(result.start_time);
-                $("#end_time").text(result.end_time);
-                $("#create_user").text(result.create_user);
-                $("#participant").text(result.participant)
+                $("#startTime").text(result.startTime);
+                $("#endTime").text(result.endTime);
+                $("#leaderUser").text(result.leaderUser);
+                $("#participantId").text(result.participantId)
             })
         });
 

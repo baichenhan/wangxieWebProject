@@ -11,4 +11,7 @@ import java.util.Map;
 public interface activityService {
     Map getAllActivity();
     Boolean addActivity(Activity activity);
+    Boolean deleteActivityById(Integer id);
+    Activity findActivityById(Integer id);
+    Boolean editActivityByActivity(Activity activity);
 }

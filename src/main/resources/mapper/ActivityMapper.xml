@@ -12,4 +12,19 @@
         select * from activity;
     </select>
 
+    <delete id="deleteActivityById" parameterType="int">
+        delete from activity where id=#{0};
+    </delete>
+
+    <select id="findActivityById" parameterType="int" resultType="Activity">
+        select * from activity where id=#{0};
+    </select>
+
+    <update id="editActivityByActivity" parameterType="Activity" useGeneratedKeys="true" keyProperty="id">
+        update activity set name=#{name}, content=#{content}, start_time=#{startTime},
+                             end_time=#{endTime}, leader_user=#{leaderUser},
+                             participant_id=#{participantId}, department=#{department}
+                            where id=#{id};
+    </update>
+
 </mapper>

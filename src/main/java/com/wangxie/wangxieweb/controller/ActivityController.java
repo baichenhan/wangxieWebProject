@@ -49,4 +49,51 @@ public class ActivityController {
     public Map getAllActivity() {
         return activityService.getAllActivity();
     }
+
+    @RequestMapping(value = "/deleteActivityById", method = {RequestMethod.POST, RequestMethod.GET})
+    public Map deleteActivityById(@NotNull HttpServletRequest request) {
+        String ids = request.getParameter("id");
+        String[] idArray = ids.split(",");
+        Map map = new HashMap<>();
+        for(String str : idArray) {
+            Integer id = Integer.parseInt(str);
+            if(!activityService.deleteActivityById(id)) {
+                map.put("status", 0);
+                map.put("message", "从id为" + id + "号的活动起删除失败");
+                return map;
+            }
+        }
+        map.put("status", 1);
+        map.put("message", "删除成功");
+        return map;
+    }
+
+    @RequestMapping(value = "/getActivityById", method = {RequestMethod.POST, RequestMethod.GET})
+    public Activity getActivityById(HttpServletRequest request) {
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        return activityService.findActivityById(id);
+    }
+
+    @RequestMapping(value = "/editActivity", method = {RequestMethod.POST, RequestMethod.GET})
+    public Map editActivity(HttpServletRequest request) {
+        Activity activity = new Activity();
+        activity.setId(Integer.parseInt(request.getParameter("id")));
+        activity.setName(request.getParameter("name"));
+        activity.setContent(request.getParameter("content"));
+        activity.setDepartment(request.getParameter("department"));
+        activity.setStartTime(Timestamp.valueOf(request.getParameter("startTime")));
+        activity.setEndTime(Timestamp.valueOf(request.getParameter("endTime")));
+        activity.setLeaderUser(request.getParameter("leaderUser"));
+        activity.setParticipantId(request.getParameter("participantId"));
+        Map map = new HashMap<>();
+        if(activityService.editActivityByActivity(activity)) {
+            map.put("status", 1);
+            map.put("message", "修改成功");
+        }
+        else {
+            map.put("status", 0);
+            map.put("message", "修改失败");
+        }
+        return map;
+    }
 }

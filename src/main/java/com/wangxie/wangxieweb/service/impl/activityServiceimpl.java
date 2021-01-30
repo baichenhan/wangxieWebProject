@@ -47,4 +47,28 @@ public class activityServiceimpl implements activityService{
         return activityMapper.addActivity(activity) != 0;
     }
 
+    @Override
+    public Boolean deleteActivityById(Integer id) {
+        return activityMapper.deleteActivityById(id) != 0;
+    }
+
+    @Override
+    public Activity findActivityById(Integer id) {
+        Activity activity = activityMapper.findActivityById(id);
+        String[] ids = activity.getParticipantId().split(",");
+        String participant = "";
+        for(String str : ids) {
+            participant += userMapper.findNameById(Integer.parseInt(str));
+            participant += ",";
+        }
+        if(!participant.equals(""))
+            participant = participant.substring(0, participant.length()-1);
+        activity.setParticipantId(participant);
+        return activity;
+    }
+
+    @Override
+    public Boolean editActivityByActivity(Activity activity) {
+       return activityMapper.editActivityByActivity(activity) != 0;
+    }
 }

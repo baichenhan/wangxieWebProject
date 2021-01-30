@@ -21,6 +21,14 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form" lay-filter="demo">
+                    <div class="layui-form-item" style="display: none">
+                        <label for="id" class="layui-form-label">
+                            <span class="x-red">*</span>活动名称
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="id" name="id" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label for="name" class="layui-form-label">
                             <span class="x-red">*</span>活动名称
@@ -29,28 +37,34 @@
                             <input type="text" id="name" name="name" required="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
+<!--                    <div class="layui-form-item">-->
+<!--                        <label for="department" class="layui-form-label">-->
+<!--                            <span class="x-red">*</span>负责部门-->
+<!--                        </label>-->
+<!--                        <div class="layui-input-inline">-->
+<!--                            <input type="text" id="department" name="department" required="" autocomplete="off" class="layui-input">-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="layui-form-item">
-                        <label for="department" class="layui-form-label">
+                        <label for="department1" class="layui-form-label">
                             <span class="x-red">*</span>负责部门
                         </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="department" name="department" required="" autocomplete="off" class="layui-input">
-                        </div>
+                        <div class="layui-input-inline" id="department1"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="start_time" class="layui-form-label">
+                        <label for="startTime" class="layui-form-label">
                             <span class="x-red">*</span>开始时间
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="start_time" name="start_time" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="startTime" name="startTime" required="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="end_time" class="layui-form-label">
+                        <label for="endTime" class="layui-form-label">
                             <span class="x-red">*</span>结束时间
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="end_time" name="end_time" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="endTime" name="endTime" required="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -61,22 +75,22 @@
                     </div>
                     <textarea name="content" id="content_text" hidden></textarea>
                     <div class="layui-form-item">
-                        <label for="create_user" class="layui-form-label">
+                        <label for="leaderUser" class="layui-form-label">
                             <span class="x-red">*</span>登记人
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="create_user" name="create_user" required="" autocomplete="off" class="layui-input">
+                            <input type="text" id="leaderUser" name="leaderUser" required="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="participant" class="layui-form-label">
+                        <label for="participantId" class="layui-form-label">
                             <span class="x-red">*</span>参与者
                         </label>
-                        <div class="layui-input-block" id="participant"></div>
+                        <div class="layui-input-block" id="participantId"></div>
                     </div>
                   <div class="layui-form-item">
-                      <label for="department" class="layui-form-label">
-                      </label>
+<!--                      <label for="department" class="layui-form-label">-->
+<!--                      </label>-->
                       <button  class="layui-btn" lay-filter="edit" lay-submit="">
                           修改
                       </button>
@@ -84,26 +98,31 @@
               </form>
             </div>
         </div>
-        <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+<!--        <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+-->
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/wangeditor/dist/wangEditor.min.js"></script>
         <script>layui.use(['form', 'layer','jquery','laydate'],
             function() {
                 $ = layui.jquery;
                 var form = layui.form, layer = layui.layer, id = getQueryVariable('id'), laydate = layui.laydate;
 
                 laydate.render({
-                    elem: '#start_time'
+                    elem: '#startTime'
                     ,type: 'datetime'
                 });
 
                 laydate.render({
-                    elem: '#end_time'
+                    elem: '#endTime'
                     ,type: 'datetime'
                 });
 
                 //监听提交
                 form.on('submit(edit)',
                 function(data) {
-                    $.post('edit.php', data.field,
+                    data.field.participantId = getCheckBoxValue();
+                    console.log(data.field);
+                    $.post('/activity/editActivity', data.field,
                         function(result){
                             if(result.status === 0) {
                                 layer.alert(result.message, {
@@ -122,39 +141,67 @@
                     return false;
                 });
 
-                $.get('user.php', function(result){
-                    var str = "<ul>";
-                    for (var k=0;k<result.length;k++){
-                        str+= "<li>";
-                        $.each(result[k].user, function (i, items) {
-                            str+= '<input type="checkbox" name="participant['+ items.user_id +']" title="' + items.user_name + '">';
-                        });
-                        str+= "</li>"
-                    }
-                    str+="</ul>";
-                    $("#participant").html(str);
-                    form.render('checkbox', 'demo');
-                });
-
-                $.get('activityDetail.php', {id:id}, function(result){
+                $.get('/activity/getActivityById', {id:id}, function(result){
                     console.log(result)
                     form.val("demo", {
+                        'id': result.id,
                         'name': result.name,
                         'content_text': result.content,
                         'department': result.department,
-                        'start_time': result.start_time,
-                        'end_time': result.end_time,
-                        'create_user': result.create_user,
+                        'startTime': result.startTime,
+                        'endTime': result.endTime,
+                        'leaderUser': result.leaderUser,
 
                     });
                     $("#contentP").html(result.content);
-                    // $.each(result, function(i, items) {
-                    //     form.val("demo", {
-                    //         "participant[6]": true
-                    //     });
-                    // })
-                    // 用layui原生赋值的时候，不能拼接字符试别变量,此处没弄好
-                })
+
+                    $.get('/common/getDepartmentList', function(result2){
+                        var str = '<select name="department">';
+                        $.each(result2, function (i, items) {
+                            str+= '<option value="' + items.name + '">' + items.name + '</option>' ;
+                        });
+                        str+='</select>'
+                        $("#department1").html(str);
+                        $('#department').val(result.department);
+                        form.render('select', 'demo');
+                    });
+
+                    $.get('/user/getUserWithDepartment', function(result1){
+                        var str = "<ul>";
+                        for (var k=0;k<result1.length;k++){
+                            str+= "<li>";
+                            $.each(result1[k].user, function (i, items) {
+                                str+= '<input type="checkbox" name="participantId" title="' + items.user_name + '" value="' + items.user_id + '"' + '">';
+                            });
+                            str+= "</li>"
+                        }
+                        str+="</ul>";
+                        $("#participantId").html(str);
+                        form.render('checkbox', 'demo');
+
+                        const part = result.participantId.split(",");
+                        $("input[name='participantId']").each(function() {
+                            console.log("this checkbox is :" + $(this).get(0).title);
+                            for(var i=0; i<part.length; i++) {
+                                if(part[i] === $(this).get(0).title) {
+                                    $(this).attr('checked', true);
+                                }
+                            }
+                        });
+                        form.render('checkbox', 'demo');
+                    })
+                    });
+
+                function getCheckBoxValue() {
+                    var str = "";
+                    $("input[name='participantId']").each(function() {
+                        if($(this).prop("checked") === true) {
+                            str += ($(this).val() + ",")
+                        }
+                    });
+                    console.log("this is getCheckBoxValue : " + str);
+                    return str;
+                }
 
                 function getQueryVariable(variable)
                 {
@@ -171,6 +218,7 @@
         <script type="text/javascript">
             const E = window.wangEditor;
             const editor = new E('#content');
+            editor.config.zIndex = 1;
             const $text = $('#content_text');
             editor.config.onchange = function (html) {
                 // 第二步，监控变化，同步更新到 textarea
