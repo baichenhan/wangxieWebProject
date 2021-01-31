@@ -9,11 +9,13 @@
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
         <link rel="stylesheet" href="./css/font.css">
         <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./js/jquery.min.js"></script>
         <script src="./lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/xadmin.js"></script>
         <!--[if lt IE 9]>
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+
         <![endif]-->
     </head>
     
@@ -84,16 +86,31 @@
             });
 
         });</script>
+
     <script>
+
+        let activityData
+        $.ajax({
+            url:'http://127.0.0.1:8081/activity/getAllActivity',
+            type: 'get',
+            async: false,
+            //dataType:'json',
+            success:function(res){
+                activityData = res.data
+            }
+        })
+
+
+
         layui.use('table', function(){
             var table = layui.table;
 
             table.render({
                 elem: '#demo'
                 ,toolbar: '#toolbarDemo'
-                ,url:'/activity/getAllActivity'
+                //,url:'/activity/getAllActivity'
                 ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增\
-                ,page: true
+                ,limit:10
                 ,cols: [[
                     {type: 'checkbox', fixed: 'left'}
                     ,{field:'id', title: 'ID', sort: true, hide:true}
@@ -103,8 +120,11 @@
                     ,{field:'endTime', title: '结束时间', sort:true}
                     ,{field:'leaderUser', title: '登记人', sort:true}
                     ,{field:'participantId', title: '参与者', hide:true}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:189}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
                 ]]
+
+                ,page: true
+                ,data: activityData
             });
 
             table.on('toolbar(demo)', function(obj){
