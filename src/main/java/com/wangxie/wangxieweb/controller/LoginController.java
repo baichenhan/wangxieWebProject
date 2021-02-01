@@ -52,7 +52,7 @@ public class LoginController {//登录逻辑的前端控制器
         }
         else {
             map.put("status", 0);
-            map.put("message", "用户名或密码错误！");
+            map.put("message", "用户名或密码错误");
         }
         return map;
     }

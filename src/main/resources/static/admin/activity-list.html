@@ -91,7 +91,7 @@
 
         let activityData
         $.ajax({
-            url:'http://127.0.0.1:8081/activity/getAllActivity',
+            url:'/activity/getAllActivity',
             type: 'get',
             async: false,
             //dataType:'json',
@@ -120,7 +120,7 @@
                     ,{field:'endTime', title: '结束时间', sort:true}
                     ,{field:'leaderUser', title: '登记人', sort:true}
                     ,{field:'participantId', title: '参与者', hide:true}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:189}
                 ]]
 
                 ,page: true

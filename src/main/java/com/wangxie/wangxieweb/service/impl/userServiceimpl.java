@@ -151,7 +151,7 @@ public class userServiceimpl implements userService {//Service接口的实现层
         user.setStudentId(userdata.student_id);
         user.setPassword(userdata.password);
         user.setGrade(userdata.grade);
-        user.setBanDeadline((Timestamp) now());
+        user.setBanDeadline(new Timestamp(System.currentTimeMillis()));
         user.setRoleId(Integer.parseInt(userdata.role));
         user.setMajorId(Integer.parseInt(userdata.major));
         user.setSex(Integer.parseInt(userdata.sex) == 1);

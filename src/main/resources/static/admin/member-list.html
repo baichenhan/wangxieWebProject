@@ -9,6 +9,7 @@
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
         <link rel="stylesheet" href="./css/font.css">
         <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./js/jquery.min.js"></script>
         <script src="./lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/xadmin.js"></script>
         <!--[if lt IE 9]>
@@ -79,8 +80,21 @@
         </div>
     </script>
     <script>
+
+        let userData
+        $.ajax({
+            url:'/user/getAllUser',
+            type: 'get',
+            async: false,
+            //dataType:'json',
+            success:function(res){
+                userData = res.data
+            }
+        })
+
         layui.use(['table','form'], function(){
-            var table = layui.table, $ = layui.$, form = layui.form;
+            var table = layui.table, form = layui.form;
+            // var $ = layui.$;
 
             //搜索用通用接口开始
             $.get('/common/getCollegeAndMajorList', function(result){
@@ -143,8 +157,9 @@
             table.render({
                 elem: '#demo'
                 ,toolbar: '#toolbarDemo'
-                ,url:'/user/getAllUser'
+                // ,url:'/user/getAllUser'
                 ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增\
+                ,limit: 10
                 ,page: true
                 ,cols: [[
                     {type: 'checkbox', fixed: 'left'}
@@ -163,7 +178,8 @@
                     ,{field:'ban_deadline', title: '封禁时间', sort:true, hide: true}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:189}
                 ]]
-                ,id: 'memberTable'
+                ,id: 'memberTable',
+                data: userData
             });
 
             table.on('toolbar(demo)', function(obj){
