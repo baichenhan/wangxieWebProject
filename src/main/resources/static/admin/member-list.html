@@ -81,7 +81,7 @@
     </script>
     <script>
 
-        let userData
+        var userData
         $.ajax({
             url:'/user/getAllUser',
             type: 'get',
@@ -165,7 +165,7 @@
                     {type: 'checkbox', fixed: 'left'}
                     ,{field:'id', title: 'ID', sort: true, hide: true}
                     ,{field:'username', title: '用户名'}
-                    ,{field:'name', title: '姓名', hide: true}
+                    ,{field:'name', title: '姓名'}
                     ,{field:'role', title: '角色', sort:true}
                     ,{field:'sex', title: '性别', sort: true}
                     ,{field:'grade', title: '年级', sort: true}
@@ -242,16 +242,37 @@
 
             //搜索按钮监听
             form.on('submit(search)', function(data){
-                table.reload('memberTable', {
-                    page: {curr: 1}
-                    ,where: {
-                            name: data.field.name,
-                            grade: data.field.grade,
-                            college: data.field.college,
-                            major: data.field.major,
-                            department: data.field.department,
-                            role: data.field.role
-                    }
+                console.log(data.field)
+                $.post('/user/getAllUser', data.field, function(result){
+                    userData = result.data
+                    console.log(userData)
+                    table.render({
+                        elem: '#demo'
+                        ,toolbar: '#toolbarDemo'
+                        // ,url:'/user/getAllUser'
+                        ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增\
+                        ,limit: 10
+                        ,page: true
+                        ,cols: [[
+                            {type: 'checkbox', fixed: 'left'}
+                            ,{field:'id', title: 'ID', sort: true, hide: true}
+                            ,{field:'username', title: '用户名'}
+                            ,{field:'name', title: '姓名'}
+                            ,{field:'role', title: '角色', sort:true}
+                            ,{field:'sex', title: '性别', sort: true}
+                            ,{field:'grade', title: '年级', sort: true}
+                            ,{field:'college', title: '学院', sort: true, hide: true}
+                            ,{field:'major', title: '专业', sort: true, hide: true}
+                            ,{field:'QQ', title: 'QQ', hide: true}
+                            ,{field:'student_id', title: '学号', sort:true, hide:true}
+                            ,{field:'department', title: '部门', sort:true}
+                            ,{field:'status', title: '状态', sort: true}
+                            ,{field:'ban_deadline', title: '封禁时间', sort:true, hide: true}
+                            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:189}
+                        ]]
+                        ,id: 'memberTable',
+                        data: userData
+                    });
                 });
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
